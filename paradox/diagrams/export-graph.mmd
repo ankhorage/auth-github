@@ -1,0 +1,27 @@
+graph LR
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts["src/features/auth/adapters/github/createGitHubAuthAdapter.ts"]
+  module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts["src/features/auth/adapters/github/createGitHubOAuthFlow.ts"]
+  module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts["src/features/auth/adapters/github/createGitHubOAuthGateway.ts"]
+  module_src_features_auth_adapters_github_createGitHubSessionOperations_ts["src/features/auth/adapters/github/createGitHubSessionOperations.ts"]
+  module_src_index_ts["src/index.ts"]
+  module_src_types_github_ts["src/types/github.ts"]
+  export_createGitHubAuthAdapter["createGitHubAuthAdapter"]
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts --> export_createGitHubAuthAdapter
+  export_createGitHubAuthAdapter -.-> export_GitHubAuthConfig
+  export_GitHubAppAuthConfig["GitHubAppAuthConfig"]
+  module_src_types_github_ts --> export_GitHubAppAuthConfig
+  export_GitHubAppAuthConfig -.-> export_GitHubAuthorizationAttemptStore
+  export_GitHubAppAuthConfig -.-> export_GitHubSessionStore
+  export_GitHubAuthConfig["GitHubAuthConfig"]
+  module_src_types_github_ts --> export_GitHubAuthConfig
+  export_GitHubAuthorizationAttempt["GitHubAuthorizationAttempt"]
+  module_src_types_github_ts --> export_GitHubAuthorizationAttempt
+  export_GitHubAuthorizationAttemptStore["GitHubAuthorizationAttemptStore"]
+  module_src_types_github_ts --> export_GitHubAuthorizationAttemptStore
+  export_GitHubAuthorizationAttemptStore -.-> export_GitHubAuthorizationAttempt
+  export_GitHubOAuthAppConfig["GitHubOAuthAppConfig"]
+  module_src_types_github_ts --> export_GitHubOAuthAppConfig
+  export_GitHubOAuthAppConfig -.-> export_GitHubAuthorizationAttemptStore
+  export_GitHubOAuthAppConfig -.-> export_GitHubSessionStore
+  export_GitHubSessionStore["GitHubSessionStore"]
+  module_src_types_github_ts --> export_GitHubSessionStore

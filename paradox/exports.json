@@ -1,0 +1,423 @@
+[
+  {
+    "name": "createGitHubAuthAdapter",
+    "title": null,
+    "description": "Implement the published AuthPort with GitHub OAuth and explicitly unsupported credentials operations.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "function",
+    "modulePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+    "sourceLocation": {
+      "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+      "line": 9,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "GitHubAuthConfig"
+    ],
+    "signatures": [
+      {
+        "label": "(config: GitHubAuthConfig) => AuthPort",
+        "parameters": [
+          {
+            "name": "config",
+            "type": "GitHubAuthConfig",
+            "required": true,
+            "description": null
+          }
+        ],
+        "returnType": "AuthPort",
+        "returnDescription": null
+      }
+    ],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubAppAuthConfig",
+    "title": null,
+    "description": "Configure the GitHub App user-authorization flow and its only supported renewal scope.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 41,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "GitHubAuthorizationAttemptStore",
+      "GitHubSessionStore"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "authorizationAttempts",
+        "kind": "property",
+        "type": "GitHubAuthorizationAttemptStore",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "authorizationAttemptTtlMs",
+        "kind": "property",
+        "type": "number | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "authorizationMode",
+        "kind": "property",
+        "type": "\"github-app\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "clientId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "clientSecret",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "createAttemptId",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "createState",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "fetcher",
+        "kind": "property",
+        "type": "typeof fetch | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "now",
+        "kind": "property",
+        "type": "(() => number) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "redirectUris",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "requestTimeoutMs",
+        "kind": "property",
+        "type": "number | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sessions",
+        "kind": "property",
+        "type": "GitHubSessionStore",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubAuthConfig",
+    "title": null,
+    "description": "Select one explicit GitHub authorization protocol; hosts must not infer it from credentials.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "unknown",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 51,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubAuthorizationAttempt",
+    "title": null,
+    "description": "One short-lived GitHub authorization bound to a host-managed browser session.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 4,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "attemptId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "expiresAt",
+        "kind": "property",
+        "type": "number",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "redirectUri",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "state",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubAuthorizationAttemptStore",
+    "title": null,
+    "description": "Durable attempt storage; consume must atomically delete before returning.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 12,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "GitHubAuthorizationAttempt"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "consume",
+        "kind": "method",
+        "type": "(attemptId: string, now: number) => Promise<GitHubAuthorizationAttempt | null>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "create",
+        "kind": "method",
+        "type": "(attempt: GitHubAuthorizationAttempt) => Promise<void>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "purgeExpired",
+        "kind": "method",
+        "type": "(now: number) => Promise<void>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubOAuthAppConfig",
+    "title": null,
+    "description": "Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 46,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [
+      "GitHubAuthorizationAttemptStore",
+      "GitHubSessionStore"
+    ],
+    "signatures": [],
+    "members": [
+      {
+        "name": "authorizationAttempts",
+        "kind": "property",
+        "type": "GitHubAuthorizationAttemptStore",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "authorizationAttemptTtlMs",
+        "kind": "property",
+        "type": "number | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "authorizationMode",
+        "kind": "property",
+        "type": "\"oauth-app\"",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "clientId",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "clientSecret",
+        "kind": "property",
+        "type": "string",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "createAttemptId",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "createState",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "fetcher",
+        "kind": "property",
+        "type": "typeof fetch | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "now",
+        "kind": "property",
+        "type": "(() => number) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "redirectUris",
+        "kind": "property",
+        "type": "readonly string[]",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "requestTimeoutMs",
+        "kind": "property",
+        "type": "number | undefined",
+        "required": false,
+        "description": null
+      },
+      {
+        "name": "sessions",
+        "kind": "property",
+        "type": "GitHubSessionStore",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubSessionStore",
+    "title": null,
+    "description": "Request-scoped server session persistence; never a shared global user slot.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 19,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "clear",
+        "kind": "method",
+        "type": "() => Promise<void>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "get",
+        "kind": "method",
+        "type": "() => Promise<AuthSession | null>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "save",
+        "kind": "method",
+        "type": "(session: AuthSession) => Promise<void>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  }
+]

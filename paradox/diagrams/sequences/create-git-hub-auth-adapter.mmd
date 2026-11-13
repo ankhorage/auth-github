@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant participant_createGitHubAuthAdapter as createGitHubAuthAdapter
+  participant participant_createGitHubOAuthFlow as createGitHubOAuthFlow
+  participant participant_createGitHubOAuthGateway as createGitHubOAuthGateway
+  participant participant_createGitHubSessionOperations as createGitHubSessionOperations
+  participant participant_isOptionalPositiveInteger as isOptionalPositiveInteger
+  participant participant_validateConfig as validateConfig
+  participant_createGitHubAuthAdapter->>participant_validateConfig: validateConfig()
+  participant_validateConfig->>participant_isOptionalPositiveInteger: isOptionalPositiveInteger()
+  participant_isOptionalPositiveInteger-->>participant_validateConfig: return
+  participant_validateConfig-->>participant_createGitHubAuthAdapter: return
+  participant_createGitHubAuthAdapter->>participant_createGitHubSessionOperations: createGitHubSessionOperations()
+  participant_createGitHubSessionOperations->>participant_createGitHubOAuthGateway: createGitHubOAuthGateway()
+  participant_createGitHubOAuthGateway-->>participant_createGitHubSessionOperations: return
+  participant_createGitHubSessionOperations-->>participant_createGitHubAuthAdapter: return
+  participant_createGitHubAuthAdapter->>participant_createGitHubOAuthFlow: createGitHubOAuthFlow()
+  participant_createGitHubOAuthFlow-->>participant_createGitHubAuthAdapter: return

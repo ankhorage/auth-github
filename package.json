@@ -1,6 +1,6 @@
 {
   "name": "@ankhorage/auth-github",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "GitHub App OAuth transport adapter implementing the provider-neutral Ankhorage auth port.",
   "type": "module",
   "main": "./dist/index.js",

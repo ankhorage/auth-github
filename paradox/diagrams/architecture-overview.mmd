@@ -1,0 +1,23 @@
+graph TD
+  package__ankhorage_auth_github["GITHUB AUTH"]
+  entrypoint_src_index_ts["src/index.ts"]
+  package__ankhorage_auth_github --> entrypoint_src_index_ts
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts["src/features/auth/adapters/github/createGitHubAuthAdapter.ts"]
+  package__ankhorage_auth_github -.-> module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts --> module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts --> module_src_features_auth_adapters_github_createGitHubSessionOperations_ts
+  module_src_features_auth_adapters_github_createGitHubAuthAdapter_ts --> module_src_types_github_ts
+  module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts["src/features/auth/adapters/github/createGitHubOAuthFlow.ts"]
+  package__ankhorage_auth_github -.-> module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts
+  module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts --> module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts
+  module_src_features_auth_adapters_github_createGitHubOAuthFlow_ts --> module_src_types_github_ts
+  module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts["src/features/auth/adapters/github/createGitHubOAuthGateway.ts"]
+  package__ankhorage_auth_github -.-> module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts
+  module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts --> module_src_types_github_ts
+  module_src_features_auth_adapters_github_createGitHubSessionOperations_ts["src/features/auth/adapters/github/createGitHubSessionOperations.ts"]
+  package__ankhorage_auth_github -.-> module_src_features_auth_adapters_github_createGitHubSessionOperations_ts
+  module_src_features_auth_adapters_github_createGitHubSessionOperations_ts --> module_src_features_auth_adapters_github_createGitHubOAuthGateway_ts
+  module_src_features_auth_adapters_github_createGitHubSessionOperations_ts --> module_src_types_github_ts
+  module_src_index_ts["src/index.ts"]
+  module_src_types_github_ts["src/types/github.ts"]
+  package__ankhorage_auth_github -.-> module_src_types_github_ts

@@ -1,0 +1,1324 @@
+{
+  "packageName": "GITHUB AUTH",
+  "packageId": "@ankhorage/auth-github",
+  "description": "GitHub App OAuth transport adapter implementing the provider-neutral Ankhorage auth port.",
+  "collaborators": null,
+  "donation": null,
+  "badges": [
+    {
+      "id": "license",
+      "label": "license",
+      "value": "MIT",
+      "color": "2563eb"
+    },
+    {
+      "id": "npm",
+      "label": "npm",
+      "value": "v0.2.0",
+      "color": "cb3837"
+    },
+    {
+      "id": "runtime",
+      "label": "runtime",
+      "value": "bun",
+      "color": "f59e0b"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "value": "strict",
+      "color": "2563eb"
+    },
+    {
+      "id": "eslint",
+      "label": "eslint",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "prettier",
+      "label": "prettier",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "build",
+      "label": "build",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "tests",
+      "label": "tests",
+      "value": "checked",
+      "color": "0a7f3f"
+    },
+    {
+      "id": "docs",
+      "label": "paradox",
+      "value": "canonical",
+      "color": "0a7f3f"
+    }
+  ],
+  "usage": {
+    "packageName": "@ankhorage/auth-github",
+    "command": null
+  },
+  "usageEntries": [],
+  "exampleCount": 0,
+  "findings": [],
+  "config": null,
+  "entrypoints": [
+    "src/index.ts"
+  ],
+  "modules": [
+    {
+      "path": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "src/types/github.ts"
+      ],
+      "exports": [
+        "createGitHubAuthAdapter"
+      ]
+    },
+    {
+      "path": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "src/types/github.ts"
+      ],
+      "exports": [
+        "createGitHubOAuthFlow"
+      ]
+    },
+    {
+      "path": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/types/github.ts"
+      ],
+      "exports": [
+        "createGitHubOAuthGateway"
+      ]
+    },
+    {
+      "path": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+      "isEntrypoint": false,
+      "dependencies": [
+        "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "src/types/github.ts"
+      ],
+      "exports": [
+        "createGitHubSessionOperations"
+      ]
+    },
+    {
+      "path": "src/index.ts",
+      "isEntrypoint": true,
+      "dependencies": [],
+      "exports": [
+        "createGitHubAuthAdapter",
+        "GitHubAppAuthConfig",
+        "GitHubAuthConfig",
+        "GitHubAuthorizationAttempt",
+        "GitHubAuthorizationAttemptStore",
+        "GitHubOAuthAppConfig",
+        "GitHubSessionStore"
+      ]
+    },
+    {
+      "path": "src/types/github.ts",
+      "isEntrypoint": false,
+      "dependencies": [],
+      "exports": [
+        "GitHubAppAuthConfig",
+        "GitHubAuthConfig",
+        "GitHubAuthorizationAttempt",
+        "GitHubAuthorizationAttemptStore",
+        "GitHubOAuthAppConfig",
+        "GitHubSessionStore"
+      ]
+    }
+  ],
+  "exports": [
+    {
+      "name": "createGitHubAuthAdapter",
+      "title": null,
+      "description": "Implement the published AuthPort with GitHub OAuth and explicitly unsupported credentials operations.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "function",
+      "modulePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 9,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "GitHubAuthConfig"
+      ],
+      "signatures": [
+        {
+          "label": "(config: GitHubAuthConfig) => AuthPort",
+          "parameters": [
+            {
+              "name": "config",
+              "type": "GitHubAuthConfig",
+              "required": true,
+              "description": null
+            }
+          ],
+          "returnType": "AuthPort",
+          "returnDescription": null
+        }
+      ],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubAppAuthConfig",
+      "title": null,
+      "description": "Configure the GitHub App user-authorization flow and its only supported renewal scope.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 41,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "GitHubAuthorizationAttemptStore",
+        "GitHubSessionStore"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "authorizationAttempts",
+          "kind": "property",
+          "type": "GitHubAuthorizationAttemptStore",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "authorizationAttemptTtlMs",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "authorizationMode",
+          "kind": "property",
+          "type": "\"github-app\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "clientId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "clientSecret",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "createAttemptId",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "createState",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "fetcher",
+          "kind": "property",
+          "type": "typeof fetch | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "now",
+          "kind": "property",
+          "type": "(() => number) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "redirectUris",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "requestTimeoutMs",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "sessions",
+          "kind": "property",
+          "type": "GitHubSessionStore",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubAuthConfig",
+      "title": null,
+      "description": "Select one explicit GitHub authorization protocol; hosts must not infer it from credentials.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "unknown",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 51,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubAuthorizationAttempt",
+      "title": null,
+      "description": "One short-lived GitHub authorization bound to a host-managed browser session.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 4,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "attemptId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "expiresAt",
+          "kind": "property",
+          "type": "number",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "redirectUri",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "state",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubAuthorizationAttemptStore",
+      "title": null,
+      "description": "Durable attempt storage; consume must atomically delete before returning.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 12,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "GitHubAuthorizationAttempt"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "consume",
+          "kind": "method",
+          "type": "(attemptId: string, now: number) => Promise<GitHubAuthorizationAttempt | null>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "create",
+          "kind": "method",
+          "type": "(attempt: GitHubAuthorizationAttempt) => Promise<void>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "purgeExpired",
+          "kind": "method",
+          "type": "(now: number) => Promise<void>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubOAuthAppConfig",
+      "title": null,
+      "description": "Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 46,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [
+        "GitHubAuthorizationAttemptStore",
+        "GitHubSessionStore"
+      ],
+      "signatures": [],
+      "members": [
+        {
+          "name": "authorizationAttempts",
+          "kind": "property",
+          "type": "GitHubAuthorizationAttemptStore",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "authorizationAttemptTtlMs",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "authorizationMode",
+          "kind": "property",
+          "type": "\"oauth-app\"",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "clientId",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "clientSecret",
+          "kind": "property",
+          "type": "string",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "createAttemptId",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "createState",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "fetcher",
+          "kind": "property",
+          "type": "typeof fetch | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "now",
+          "kind": "property",
+          "type": "(() => number) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "redirectUris",
+          "kind": "property",
+          "type": "readonly string[]",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "requestTimeoutMs",
+          "kind": "property",
+          "type": "number | undefined",
+          "required": false,
+          "description": null
+        },
+        {
+          "name": "sessions",
+          "kind": "property",
+          "type": "GitHubSessionStore",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubSessionStore",
+      "title": null,
+      "description": "Request-scoped server session persistence; never a shared global user slot.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 19,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "clear",
+          "kind": "method",
+          "type": "() => Promise<void>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "get",
+          "kind": "method",
+          "type": "() => Promise<AuthSession | null>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "save",
+          "kind": "method",
+          "type": "(session: AuthSession) => Promise<void>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    }
+  ],
+  "components": [],
+  "sourceFunctions": [
+    {
+      "name": "createGitHubAuthAdapter",
+      "description": "Implement the published AuthPort with GitHub OAuth and explicitly unsupported credentials operations.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "validateConfig",
+      "description": "Refuse configuration with secrets missing or callbacks that cannot be trusted.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 22,
+        "column": 1
+      }
+    },
+    {
+      "name": "isOptionalPositiveInteger",
+      "description": "Validate an optional positive integer without bloating the adapter configuration policy.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 36,
+        "column": 1
+      }
+    },
+    {
+      "name": "isSecureRedirectUri",
+      "description": "Require exact canonical HTTPS callback URIs without embedded credentials or query data.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 41,
+        "column": 1
+      }
+    },
+    {
+      "name": "unsupported",
+      "description": "Make unsupported provider operations fail closed rather than simulate successful auth.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "line": 58,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGitHubOAuthFlow",
+      "description": "Provide OAuth start/completion using durable one-use attempts and verified GitHub identity.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 16,
+        "column": 1
+      }
+    },
+    {
+      "name": "startAuthorizationAsync",
+      "description": "Verify the provider, callback, and requested permissions before storing a new attempt.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 26,
+        "column": 1
+      }
+    },
+    {
+      "name": "createOpaqueValue",
+      "description": "Generate host-overridable opaque OAuth values without detaching the platform Crypto receiver.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 67,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasSupportedScopes",
+      "description": "Restrict each GitHub authorization protocol to its documented, least-privilege scope vocabulary.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 72,
+        "column": 1
+      }
+    },
+    {
+      "name": "createAuthorizationUrl",
+      "description": "Construct GitHub's fixed OAuth endpoint without accepting arbitrary caller query parameters.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 88,
+        "column": 1
+      }
+    },
+    {
+      "name": "completeAuthorizationAsync",
+      "description": "Consume the OAuth attempt before validation and persist only verified GitHub sessions.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 102,
+        "column": 1
+      }
+    },
+    {
+      "name": "consumeAttemptAsync",
+      "description": "Retire the pending authorization even when storage fails or the attempt is expired.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 133,
+        "column": 1
+      }
+    },
+    {
+      "name": "parseCallback",
+      "description": "Bind a callback to its configured HTTPS origin/path and a single OAuth state value.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 145,
+        "column": 1
+      }
+    },
+    {
+      "name": "oauthError",
+      "description": "Return contract-compatible OAuth failures without raw codes, tokens, or provider payloads.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 172,
+        "column": 1
+      }
+    },
+    {
+      "name": "oauthStartError",
+      "description": "Refuse incorrect provider setup with a portable, nonsecret OAuth start result.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 190,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGitHubOAuthGateway",
+      "description": "Bind the confidential GitHub user-token exchange and refresh to a fixed provider endpoint.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 9,
+        "column": 1
+      }
+    },
+    {
+      "name": "readSessionAsync",
+      "description": "Exchange a GitHub user token and verify that it matches the expected identity when refreshing.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 23,
+        "column": 1
+      }
+    },
+    {
+      "name": "readUserAsync",
+      "description": "Request the authoritative GitHub user for this token rather than trusting account hints.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 61,
+        "column": 1
+      }
+    },
+    {
+      "name": "readToken",
+      "description": "Reject non-bearer, malformed, missing or nonexpiring-looking GitHub OAuth responses.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 89,
+        "column": 1
+      }
+    },
+    {
+      "name": "isValidGitHubUser",
+      "description": "Validate the signed-in GitHub account's stable numeric identity and login.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 110,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidAccessToken",
+      "description": "Require a non-empty opaque OAuth access token.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 127,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidTokenType",
+      "description": "Only accept a bearer token when GitHub states a token type.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 134,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidRefreshToken",
+      "description": "Reject refresh credentials of unexpected provider data types.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 142,
+        "column": 1
+      }
+    },
+    {
+      "name": "hasValidTokenExpiration",
+      "description": "Accept optional positive integer GitHub access-token lifetimes.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 150,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow untrusted provider JSON before inspecting its fields.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "line": 160,
+        "column": 1
+      }
+    },
+    {
+      "name": "createGitHubSessionOperations",
+      "description": "Bind session-related AuthPort operations to a request-scoped durable host store.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 8,
+        "column": 1
+      }
+    },
+    {
+      "name": "signOutAsync",
+      "description": "Remove only the host's local session; never claim global GitHub sign-out.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 20,
+        "column": 1
+      }
+    },
+    {
+      "name": "getSessionAsync",
+      "description": "Read the stored session without silently treating expired tokens as authenticated.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 35,
+        "column": 1
+      }
+    },
+    {
+      "name": "refreshSessionAsync",
+      "description": "Refresh a token and fail closed if GitHub returns another user identity.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 47,
+        "column": 1
+      }
+    },
+    {
+      "name": "sessionError",
+      "description": "Normalize session failures without exposing secrets from storage or GitHub.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 68,
+        "column": 1
+      }
+    }
+  ],
+  "sequenceScenarios": [
+    {
+      "kind": "export",
+      "name": "createGitHubAuthAdapter",
+      "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+      "symbolName": "createGitHubAuthAdapter",
+      "description": "Implement the published AuthPort with GitHub OAuth and explicitly unsupported credentials operations.",
+      "isReadme": false
+    }
+  ],
+  "graphs": {
+    "imports": [
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/index.ts",
+        "toPath": "src/types/github.ts",
+        "sourcePath": "src/index.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "toPath": "src/types/github.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "toPath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
+        "toPath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "toPath": "src/types/github.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "toPath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "toPath": "src/types/github.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "toPath": "src/types/github.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromPath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "toPath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      }
+    ],
+    "calls": [
+      {
+        "fromSymbol": "createGitHubAuthAdapter",
+        "toSymbol": "validateConfig",
+        "callExpression": "validateConfig",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "createGitHubAuthAdapter",
+        "toSymbol": "createGitHubSessionOperations",
+        "callExpression": "createGitHubSessionOperations",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "createGitHubAuthAdapter",
+        "toSymbol": "createGitHubOAuthFlow",
+        "callExpression": "createGitHubOAuthFlow",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "signIn",
+        "toSymbol": "unsupported",
+        "callExpression": "unsupported",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "signUp",
+        "toSymbol": "unsupported",
+        "callExpression": "unsupported",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "requestPasswordReset",
+        "toSymbol": "unsupported",
+        "callExpression": "unsupported",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "verifyOtp",
+        "toSymbol": "unsupported",
+        "callExpression": "unsupported",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "validateConfig",
+        "toSymbol": "isOptionalPositiveInteger",
+        "callExpression": "isOptionalPositiveInteger",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "startAuthorization",
+        "toSymbol": "startAuthorizationAsync",
+        "callExpression": "startAuthorizationAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorization",
+        "toSymbol": "completeAuthorizationAsync",
+        "callExpression": "completeAuthorizationAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "oauthStartError",
+        "callExpression": "oauthStartError",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "hasSupportedScopes",
+        "callExpression": "hasSupportedScopes",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "createOpaqueValue",
+        "callExpression": "createOpaqueValue",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "purgeExpired",
+        "callExpression": "config.authorizationAttempts.purgeExpired",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "create",
+        "callExpression": "config.authorizationAttempts.create",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "startAuthorizationAsync",
+        "toSymbol": "createAuthorizationUrl",
+        "callExpression": "createAuthorizationUrl",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "createOpaqueValue",
+        "toSymbol": "factory",
+        "callExpression": "factory",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "consumeAttemptAsync",
+        "callExpression": "consumeAttemptAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "oauthError",
+        "callExpression": "oauthError",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "parseCallback",
+        "callExpression": "parseCallback",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "createGitHubOAuthGateway",
+        "callExpression": "createGitHubOAuthGateway",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "exchangeCodeAsync",
+        "callExpression": "gateway.exchangeCodeAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "save",
+        "callExpression": "config.sessions.save",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "consumeAttemptAsync",
+        "toSymbol": "consume",
+        "callExpression": "config.authorizationAttempts.consume",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "consumeAttemptAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "exchangeCodeAsync",
+        "toSymbol": "readSessionAsync",
+        "callExpression": "readSessionAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "refreshTokenAsync",
+        "toSymbol": "readSessionAsync",
+        "callExpression": "readSessionAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readSessionAsync",
+        "toSymbol": "readToken",
+        "callExpression": "readToken",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readSessionAsync",
+        "toSymbol": "readUserAsync",
+        "callExpression": "readUserAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readSessionAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readUserAsync",
+        "toSymbol": "isValidGitHubUser",
+        "callExpression": "isValidGitHubUser",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readToken",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readToken",
+        "toSymbol": "hasValidAccessToken",
+        "callExpression": "hasValidAccessToken",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readToken",
+        "toSymbol": "hasValidTokenType",
+        "callExpression": "hasValidTokenType",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readToken",
+        "toSymbol": "hasValidRefreshToken",
+        "callExpression": "hasValidRefreshToken",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "readToken",
+        "toSymbol": "hasValidTokenExpiration",
+        "callExpression": "hasValidTokenExpiration",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "isValidGitHubUser",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthGateway.ts"
+      },
+      {
+        "fromSymbol": "createGitHubSessionOperations",
+        "toSymbol": "createGitHubOAuthGateway",
+        "callExpression": "createGitHubOAuthGateway",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "signOut",
+        "toSymbol": "signOutAsync",
+        "callExpression": "signOutAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "getSession",
+        "toSymbol": "getSessionAsync",
+        "callExpression": "getSessionAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSession",
+        "toSymbol": "refreshSessionAsync",
+        "callExpression": "refreshSessionAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "signOutAsync",
+        "toSymbol": "clear",
+        "callExpression": "config.sessions.clear",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "signOutAsync",
+        "toSymbol": "sessionError",
+        "callExpression": "sessionError",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "getSessionAsync",
+        "toSymbol": "get",
+        "callExpression": "config.sessions.get",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "getSessionAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "getSessionAsync",
+        "toSymbol": "sessionError",
+        "callExpression": "sessionError",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "get",
+        "callExpression": "config.sessions.get",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "sessionError",
+        "callExpression": "sessionError",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "refreshTokenAsync",
+        "callExpression": "gateway.refreshTokenAsync",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "save",
+        "callExpression": "config.sessions.save",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      }
+    ],
+    "typeReferences": [
+      {
+        "fromSymbol": "createGitHubAuthAdapter",
+        "toType": "AuthPort",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "createGitHubAuthAdapter",
+        "toType": "GitHubAuthConfig",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts"
+      },
+      {
+        "fromSymbol": "GitHubAppAuthConfig",
+        "toType": "GitHubAuthorizationAttemptStore",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubAppAuthConfig",
+        "toType": "GitHubSessionStore",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubAuthorizationAttemptStore",
+        "toType": "GitHubAuthorizationAttempt",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubOAuthAppConfig",
+        "toType": "GitHubAuthorizationAttemptStore",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubOAuthAppConfig",
+        "toType": "GitHubSessionStore",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubSessionStore",
+        "toType": "AuthSession",
+        "sourcePath": "src/types/github.ts"
+      }
+    ],
+    "componentComposition": []
+  }
+}
