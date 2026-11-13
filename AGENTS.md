@@ -9,6 +9,7 @@ The auth adapter owns identity, user token exchange, and server-side session/att
 ## Required repository instructions
 
 Before editing, read this file and inspect `.agents/skills/`. Load:
+
 - `.agents/skills/ankhorage-coding-rules/SKILL.md`
 - `.agents/skills/ankhorage-project-structure/SKILL.md`
 - `.agents/skills/hexagonal-architecture/SKILL.md` for feature and adapter changes.

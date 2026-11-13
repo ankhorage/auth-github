@@ -20,23 +20,30 @@ export function createGitHubAuthAdapter(config: GitHubAuthConfig): AuthPort {
 
 /*** Refuse configuration with secrets missing or callbacks that cannot be trusted. */
 function validateConfig(config: GitHubAuthConfig): void {
-  if (!config.clientId.trim() || !config.clientSecret.trim() || config.redirectUris.length === 0 ||
-      (config.authorizationAttemptTtlMs !== undefined &&
-        (!Number.isSafeInteger(config.authorizationAttemptTtlMs) ||
-        config.authorizationAttemptTtlMs < 1)) ||
-      (config.requestTimeoutMs !== undefined &&
-        (!Number.isSafeInteger(config.requestTimeoutMs) || config.requestTimeoutMs < 1))) {
-    throw new Error('Invalid GitHub App authorization configuration.');
-  }
-  for (const item of config.redirectUris) {
-    try {
-      const url = new URL(item);
-      if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash ||
-          url.toString() !== item)
-        throw new Error('Invalid callback.');
-    } catch {
-      throw new Error('GitHub OAuth callback URLs must be explicitly allowlisted HTTPS URLs.');
-    }
+  if (
+    !config.clientId.trim() ||
+    !config.clientSecret.trim() ||
+    config.redirectUris.length === 0 ||
+    !isOptionalPositiveInteger(config.authorizationAttemptTtlMs) ||
+    !isOptionalPositiveInteger(config.requestTimeoutMs)
+  ) throw new Error('Invalid GitHub App authorization configuration.');
+  if (!config.redirectUris.every(isSecureRedirectUri))
+    throw new Error('GitHub OAuth callback URLs must be explicitly allowlisted HTTPS URLs.');
+}
+
+/*** Validate an optional positive integer without bloating the adapter configuration policy. */
+function isOptionalPositiveInteger(value: number | undefined): boolean {
+  return value === undefined || (Number.isSafeInteger(value) && value > 0);
+}
+
+/*** Require exact canonical HTTPS callback URIs without embedded credentials or query data. */
+function isSecureRedirectUri(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && !url.username && !url.password &&
+      !url.search && !url.hash && url.toString() === value;
+  } catch {
+    return false;
   }
 }
 

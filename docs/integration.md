@@ -10,6 +10,7 @@ Organization owners may need to approve/install the app before their repositorie
 The user OAuth flow alone does not grant access to every organization repository.
 
 The host must provide:
+
 - `clientId` and `clientSecret` from a server-side secrets manager.
 - `redirectUris` explicitly allowlisted; no arbitrary callback or host-header derivation.
 - A durable `authorizationAttempts` store that atomically consumes an attempt ID once, including on error.

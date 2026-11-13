@@ -1,7 +1,10 @@
 import type { AuthPort } from '@ankhorage/auth';
 import type {
-  AuthOAuthCompletionResult, AuthOAuthError, AuthOAuthStartResult,
-  CompleteOAuthAuthorizationInput, StartOAuthAuthorizationInput,
+  AuthOAuthCompletionResult,
+  AuthOAuthError,
+  AuthOAuthStartResult,
+  CompleteOAuthAuthorizationInput,
+  StartOAuthAuthorizationInput,
 } from '@ankhorage/contracts/auth';
 
 import type { GitHubAuthConfig, GitHubAuthorizationAttempt } from '../../../../types/github.js';
@@ -11,26 +14,31 @@ const DEFAULT_TTL_MS = 600_000;
 
 /*** Provide OAuth start/completion using durable one-use attempts and verified GitHub identity. */
 export function createGitHubOAuthFlow(
-  config: GitHubAuthConfig
+  config: GitHubAuthConfig,
 ): Pick<AuthPort, 'startAuthorization' | 'completeAuthorization'> {
   return {
-    startAuthorization: input => startAuthorizationAsync(config, input),
-    completeAuthorization: input => completeAuthorizationAsync(config, input),
+    startAuthorization: (input) => startAuthorizationAsync(config, input),
+    completeAuthorization: (input) => completeAuthorizationAsync(config, input),
   };
 }
 
 /*** Verify the provider, callback, and requested permissions before storing a new attempt. */
 async function startAuthorizationAsync(
   config: GitHubAuthConfig,
-  input: StartOAuthAuthorizationInput
+  input: StartOAuthAuthorizationInput,
 ): Promise<AuthOAuthStartResult> {
   if (input.provider !== 'github')
     return oauthStartError('provider_disabled', 'GitHub is the only supported provider.');
   if (!config.redirectUris.includes(input.redirectUri))
     return oauthStartError('invalid_redirect_uri', 'The callback URL is not allowlisted.');
-  if (input.scopes?.some(scope => scope !== 'offline_access') ||
-      (input.queryParams !== undefined && Object.keys(input.queryParams).length > 0))
-    return oauthStartError('authorization_failed', 'Unsupported GitHub App authorization parameters.');
+  if (
+    input.scopes?.some((scope) => scope !== 'offline_access') ||
+    (input.queryParams !== undefined && Object.keys(input.queryParams).length > 0)
+  )
+    return oauthStartError(
+      'authorization_failed',
+      'Unsupported GitHub App authorization parameters.',
+    );
 
   const attempt: GitHubAuthorizationAttempt = {
     attemptId: (config.createAttemptId ?? crypto.randomUUID)(),
@@ -41,12 +49,15 @@ async function startAuthorizationAsync(
   try {
     await config.authorizationAttempts.purgeExpired((config.now ?? Date.now)());
     await config.authorizationAttempts.create(attempt);
-    return { ok: true, data: {
-      attemptId: attempt.attemptId,
-      provider: 'github',
-      redirectUri: attempt.redirectUri,
-      authorizationUrl: createAuthorizationUrl(config.clientId, attempt, input.scopes),
-    } };
+    return {
+      ok: true,
+      data: {
+        attemptId: attempt.attemptId,
+        provider: 'github',
+        redirectUri: attempt.redirectUri,
+        authorizationUrl: createAuthorizationUrl(config.clientId, attempt, input.scopes),
+      },
+    };
   } catch {
     return oauthStartError('authorization_failed', 'Unable to start GitHub authorization.');
   }
@@ -56,7 +67,7 @@ async function startAuthorizationAsync(
 function createAuthorizationUrl(
   clientId: string,
   attempt: GitHubAuthorizationAttempt,
-  scopes: readonly string[] | undefined
+  scopes: readonly string[] | undefined,
 ): string {
   const url = new URL('https://github.com/login/oauth/authorize');
   url.searchParams.set('client_id', clientId);
@@ -69,7 +80,7 @@ function createAuthorizationUrl(
 /*** Consume the OAuth attempt before validation and persist only verified GitHub sessions. */
 async function completeAuthorizationAsync(
   config: GitHubAuthConfig,
-  input: CompleteOAuthAuthorizationInput
+  input: CompleteOAuthAuthorizationInput,
 ): Promise<AuthOAuthCompletionResult> {
   const attempt = await consumeAttemptAsync(config, input.attemptId);
   if (attempt === null) return oauthError('authorization_attempt_not_found', 'callback');
@@ -100,7 +111,7 @@ async function completeAuthorizationAsync(
 /*** Retire the pending authorization even when storage fails or the attempt is expired. */
 async function consumeAttemptAsync(
   config: GitHubAuthConfig,
-  attemptId: string
+  attemptId: string,
 ): Promise<GitHubAuthorizationAttempt | null> {
   try {
     return await config.authorizationAttempts.consume(attemptId, (config.now ?? Date.now)());
@@ -112,15 +123,19 @@ async function consumeAttemptAsync(
 /*** Bind a callback to its configured HTTPS origin/path and a single OAuth state value. */
 function parseCallback(
   urlText: string,
-  redirectUri: string
+  redirectUri: string,
 ): { readonly state: string; readonly code?: string; readonly error?: string } | null {
   try {
     const actual = new URL(urlText);
     const expected = new URL(redirectUri);
-    if (actual.origin !== expected.origin || actual.pathname !== expected.pathname ||
-        actual.hash !== '' || actual.searchParams.getAll('state').length !== 1 ||
-        actual.searchParams.getAll('code').length > 1 ||
-        actual.searchParams.getAll('error').length > 1)
+    if (
+      actual.origin !== expected.origin ||
+      actual.pathname !== expected.pathname ||
+      actual.hash !== '' ||
+      actual.searchParams.getAll('state').length !== 1 ||
+      actual.searchParams.getAll('code').length > 1 ||
+      actual.searchParams.getAll('error').length > 1
+    )
       return null;
     const state = actual.searchParams.get('state');
     if (!state) return null;
@@ -135,20 +150,31 @@ function parseCallback(
 /*** Return contract-compatible OAuth failures without raw codes, tokens, or provider payloads. */
 function oauthError(
   code: AuthOAuthError['code'],
-  stage: AuthOAuthError['stage']
+  stage: AuthOAuthError['stage'],
 ): AuthOAuthCompletionResult {
-  return { ok: false, status: 'error', error: {
-    code, stage, provider: 'github', recoverable: false,
-    message: 'GitHub authorization failed.',
-  } };
+  return {
+    ok: false,
+    status: 'error',
+    error: {
+      code,
+      stage,
+      provider: 'github',
+      recoverable: false,
+      message: 'GitHub authorization failed.',
+    },
+  };
 }
 
 /*** Refuse incorrect provider setup with a portable, nonsecret OAuth start result. */
-function oauthStartError(
-  code: AuthOAuthError['code'],
-  message: string
-): AuthOAuthStartResult {
-  return { ok: false, error: {
-    code, message, stage: 'start', provider: 'github', recoverable: false,
-  } };
+function oauthStartError(code: AuthOAuthError['code'], message: string): AuthOAuthStartResult {
+  return {
+    ok: false,
+    error: {
+      code,
+      message,
+      stage: 'start',
+      provider: 'github',
+      recoverable: false,
+    },
+  };
 }

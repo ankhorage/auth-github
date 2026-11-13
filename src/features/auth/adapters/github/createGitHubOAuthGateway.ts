@@ -14,7 +14,7 @@ export function createGitHubOAuthGateway(config: GitHubAuthConfig) {
       readSessionAsync(
         config,
         { grant_type: 'refresh_token', refresh_token: refreshToken },
-        expectedUserId
+        expectedUserId,
       ),
   };
 }
@@ -23,7 +23,7 @@ export function createGitHubOAuthGateway(config: GitHubAuthConfig) {
 async function readSessionAsync(
   config: GitHubAuthConfig,
   parameters: Readonly<Record<string, string>>,
-  expectedUserId?: string
+  expectedUserId?: string,
 ): Promise<AuthSession> {
   const body = new URLSearchParams({
     client_id: config.clientId,
@@ -71,19 +71,17 @@ async function readUserAsync(config: GitHubAuthConfig, token: string): Promise<A
   });
   if (!response.ok) throw new Error('GitHub identity verification failed.');
   const value: unknown = await response.json();
-  if (!isRecord(value) || typeof value.id !== 'number' ||
-      !Number.isSafeInteger(value.id) || value.id < 1 ||
-      typeof value.login !== 'string' || value.login.trim() === '')
-    throw new Error('GitHub returned an invalid user identity.');
+  if (!isValidGitHubUser(value)) throw new Error('GitHub returned an invalid user identity.');
   return {
     id: String(value.id),
     username: value.login,
     ...(typeof value.name === 'string' && value.name.trim() !== ''
-      ? { displayName: value.name } : {}),
-    ...(typeof value.email === 'string' && value.email.trim() !== ''
-      ? { email: value.email } : {}),
+      ? { displayName: value.name }
+      : {}),
+    ...(typeof value.email === 'string' && value.email.trim() !== '' ? { email: value.email } : {}),
     ...(typeof value.avatar_url === 'string' && value.avatar_url.startsWith('https://')
-      ? { avatarUrl: value.avatar_url } : {}),
+      ? { avatarUrl: value.avatar_url }
+      : {}),
   };
 }
 
@@ -93,21 +91,56 @@ function readToken(value: unknown): {
   readonly refreshToken?: string;
   readonly expiresIn?: number;
 } {
-  if (!isRecord(value) || typeof value.access_token !== 'string' ||
-      value.access_token.length === 0 ||
-      (value.token_type !== undefined &&
-        (typeof value.token_type !== 'string' || value.token_type.toLowerCase() !== 'bearer')) ||
-      (value.refresh_token !== undefined &&
-        (typeof value.refresh_token !== 'string' || value.refresh_token.length === 0)) ||
-      (value.expires_in !== undefined &&
-        (typeof value.expires_in !== 'number' || !Number.isSafeInteger(value.expires_in) ||
-        value.expires_in < 1)))
-    throw new Error('GitHub returned an invalid token response.');
+  if (
+    !isRecord(value) ||
+    !hasValidAccessToken(value) ||
+    !hasValidTokenType(value) ||
+    !hasValidRefreshToken(value) ||
+    !hasValidTokenExpiration(value)
+  ) throw new Error('GitHub returned an invalid token response.');
   return {
     accessToken: value.access_token,
     ...(typeof value.refresh_token === 'string' ? { refreshToken: value.refresh_token } : {}),
     ...(typeof value.expires_in === 'number' ? { expiresIn: value.expires_in } : {}),
   };
+}
+
+/*** Validate the signed-in GitHub account's stable numeric identity and login. */
+function isValidGitHubUser(value: unknown): value is GitHubUserRecord {
+  return isRecord(value) && typeof value.id === 'number' &&
+    Number.isSafeInteger(value.id) && value.id > 0 &&
+    typeof value.login === 'string' && value.login.trim() !== '';
+}
+
+interface GitHubUserRecord extends Record<string, unknown> {
+  id: number;
+  login: string;
+}
+
+/*** Require a non-empty opaque OAuth access token. */
+function hasValidAccessToken(
+  value: Record<string, unknown>
+): value is Record<string, unknown> & { access_token: string } {
+  return typeof value.access_token === 'string' && value.access_token.length > 0;
+}
+
+/*** Only accept a bearer token when GitHub states a token type. */
+function hasValidTokenType(value: Record<string, unknown>): boolean {
+  return value.token_type === undefined ||
+    (typeof value.token_type === 'string' && value.token_type.toLowerCase() === 'bearer');
+}
+
+/*** Reject refresh credentials of unexpected provider data types. */
+function hasValidRefreshToken(value: Record<string, unknown>): boolean {
+  return value.refresh_token === undefined ||
+    (typeof value.refresh_token === 'string' && value.refresh_token.length > 0);
+}
+
+/*** Accept optional positive integer GitHub access-token lifetimes. */
+function hasValidTokenExpiration(value: Record<string, unknown>): boolean {
+  return value.expires_in === undefined ||
+    (typeof value.expires_in === 'number' &&
+    Number.isSafeInteger(value.expires_in) && value.expires_in > 0);
 }
 
 /*** Narrow untrusted provider JSON before inspecting its fields. */
