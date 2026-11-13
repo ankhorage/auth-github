@@ -49,6 +49,7 @@
     "typecheck": "bun run check-types",
     "test": "bun test src",
     "lint": "ankhorage-eslint . --max-warnings=0",
+    "lint:fix": "ankhorage-eslint . --fix --max-warnings=0",
     "format": "ankhorage-prettier --write .",
     "format:check": "ankhorage-prettier --check .",
     "knip:check": "ankhorage-knip",
