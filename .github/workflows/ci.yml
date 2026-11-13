@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.4.2'
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install dependencies
+        run: bun install
+      - name: Build
+        run: bun run build
+      - name: Typecheck
+        run: bun run check-types
+      - name: Unit tests
+        run: bun run test
+      - name: Lint
+        run: bun run lint
+      - name: Format check
+        run: bun run format:check
+      - name: Knip
+        run: bun run knip:check
+      - name: Standalone package consumer
+        run: |
+          set -euo pipefail
+          pack_dir="$(mktemp -d)"
+          consumer="$(mktemp -d)"
+          npm pack --ignore-scripts --pack-destination "$pack_dir" >/dev/null
+          printf '{"name":"github-auth-consumer","private":true,"version":"0.0.0","type":"module"}\n' > "$consumer/package.json"
+          (
+            cd "$consumer"
+            bun add "$pack_dir"/*.tgz --ignore-scripts
+            node --input-type=module -e "import('@ankhorage/auth-github').then(m => { if(typeof m.createGitHubAuthAdapter !== 'function') process.exit(1) })"
+          )
+      - name: Upload generated initial Bun lock for bootstrap
+        uses: actions/upload-artifact@v4
+        with:
+          name: bootstrap-bun-lock
+          path: bun.lock
+          retention-days: 2

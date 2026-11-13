@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022", "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext", "moduleResolution": "bundler",
+    "strict": true, "noUncheckedIndexedAccess": true, "verbatimModuleSyntax": true,
+    "skipLibCheck": true, "declaration": true, "declarationMap": true, "sourceMap": true,
+    "inlineSources": true, "rootDir": "src", "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"], "exclude": ["dist", "node_modules", "src/**/*.test.ts"]
+}
