@@ -23,7 +23,7 @@ export interface GitHubSessionStore {
 }
 
 /*** Host-supplied confidential GitHub App configuration and independently scoped persistence. */
-export interface GitHubAuthConfig {
+interface GitHubAuthConfigBase {
   readonly clientId: string;
   readonly clientSecret: string;
   readonly redirectUris: readonly string[];
@@ -36,3 +36,16 @@ export interface GitHubAuthConfig {
   readonly authorizationAttemptTtlMs?: number;
   readonly requestTimeoutMs?: number;
 }
+
+/*** Configure the GitHub App user-authorization flow and its only supported renewal scope. */
+export interface GitHubAppAuthConfig extends GitHubAuthConfigBase {
+  readonly authorizationMode: 'github-app';
+}
+
+/*** Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope. */
+export interface GitHubOAuthAppConfig extends GitHubAuthConfigBase {
+  readonly authorizationMode: 'oauth-app';
+}
+
+/*** Select one explicit GitHub authorization protocol; hosts must not infer it from credentials. */
+export type GitHubAuthConfig = GitHubAppAuthConfig | GitHubOAuthAppConfig;

@@ -22,6 +22,16 @@ test('uses the canonical AuthPort and a confidential GitHub App authorization UR
   expect(fixture.attempts.size).toBe(1);
 });
 
+test('uses bound platform crypto when a host does not inject OAuth identifier factories', async () => {
+  const fixture = createFixture({ createAttemptId: undefined, createState: undefined });
+  const result = await startAuthorizationAsync(fixture);
+  expect(result.ok).toBe(true);
+  if (result.ok) {
+    expect(result.data.attemptId).not.toBe('attempt_1');
+    expect(new URL(result.data.authorizationUrl).searchParams.get('state')).not.toBe('state_1');
+  }
+});
+
 test('allows only GitHub and exact server-registered HTTPS callbacks', async () => {
   const fixture = createFixture();
   expect(
@@ -49,7 +59,7 @@ test('allows only GitHub and exact server-registered HTTPS callbacks', async () 
   );
 });
 
-test('safely requests optional offline_access without escalating repository scopes', async () => {
+test('limits GitHub App authorization to its documented renewal scope', async () => {
   const fixture = createFixture();
   const result = await fixture.adapter.startAuthorization({
     provider: 'github',
@@ -59,6 +69,56 @@ test('safely requests optional offline_access without escalating repository scop
   expect(result.ok).toBe(true);
   if (result.ok)
     expect(new URL(result.data.authorizationUrl).searchParams.get('scope')).toBe('offline_access');
+});
+
+test('starts a classic OAuth App login with read:user and an explicit optional repo scope', async () => {
+  const fixture = createFixture({ authorizationMode: 'oauth-app' });
+  const regular = await fixture.adapter.startAuthorization({
+    provider: 'github',
+    redirectUri: 'https://atlas.example/auth/callback',
+    scopes: ['read:user'],
+  });
+  expect(regular.ok).toBe(true);
+  if (regular.ok)
+    expect(new URL(regular.data.authorizationUrl).searchParams.get('scope')).toBe('read:user');
+
+  const repositoryFixture = createFixture({ authorizationMode: 'oauth-app' });
+  const repositoryAccess = await repositoryFixture.adapter.startAuthorization({
+    provider: 'github',
+    redirectUri: 'https://atlas.example/auth/callback',
+    scopes: ['read:user', 'repo'],
+  });
+  expect(repositoryAccess.ok).toBe(true);
+  if (repositoryAccess.ok)
+    expect(new URL(repositoryAccess.data.authorizationUrl).searchParams.get('scope')).toBe(
+      'read:user repo',
+    );
+});
+
+test('rejects scope escalation across GitHub authorization modes', async () => {
+  const classic = createFixture({ authorizationMode: 'oauth-app' });
+  expect(
+    await classic.adapter.startAuthorization({
+      provider: 'github',
+      redirectUri: 'https://atlas.example/auth/callback',
+      scopes: ['admin:org'],
+    }),
+  ).toMatchObject({ ok: false, error: { code: 'authorization_failed' } });
+  expect(
+    await classic.adapter.startAuthorization({
+      provider: 'github',
+      redirectUri: 'https://atlas.example/auth/callback',
+      scopes: ['repo'],
+    }),
+  ).toMatchObject({ ok: false, error: { code: 'authorization_failed' } });
+  const app = createFixture();
+  expect(
+    await app.adapter.startAuthorization({
+      provider: 'github',
+      redirectUri: 'https://atlas.example/auth/callback',
+      scopes: ['read:user'],
+    }),
+  ).toMatchObject({ ok: false, error: { code: 'authorization_failed' } });
 });
 
 test('exchanges a code, verifies GitHub identity, and persists a token-bearing session', async () => {

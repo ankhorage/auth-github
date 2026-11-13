@@ -32,7 +32,7 @@ async function startAuthorizationAsync(
   if (!config.redirectUris.includes(input.redirectUri))
     return oauthStartError('invalid_redirect_uri', 'The callback URL is not allowlisted.');
   if (
-    input.scopes?.some((scope) => scope !== 'offline_access') ||
+    !hasSupportedScopes(config, input.scopes) ||
     (input.queryParams !== undefined && Object.keys(input.queryParams).length > 0)
   )
     return oauthStartError(
@@ -41,8 +41,8 @@ async function startAuthorizationAsync(
     );
 
   const attempt: GitHubAuthorizationAttempt = {
-    attemptId: (config.createAttemptId ?? crypto.randomUUID)(),
-    state: (config.createState ?? crypto.randomUUID)(),
+    attemptId: createOpaqueValue(config.createAttemptId),
+    state: createOpaqueValue(config.createState),
     redirectUri: input.redirectUri,
     expiresAt: (config.now ?? Date.now)() + (config.authorizationAttemptTtlMs ?? DEFAULT_TTL_MS),
   };
@@ -63,6 +63,27 @@ async function startAuthorizationAsync(
   }
 }
 
+/*** Generate host-overridable opaque OAuth values without detaching the platform Crypto receiver. */
+function createOpaqueValue(factory: (() => string) | undefined): string {
+  return factory?.() ?? crypto.randomUUID();
+}
+
+/*** Restrict each GitHub authorization protocol to its documented, least-privilege scope vocabulary. */
+function hasSupportedScopes(
+  config: GitHubAuthConfig,
+  scopes: readonly string[] | undefined,
+): boolean {
+  const permittedScopes =
+    config.authorizationMode === 'oauth-app' ? ['read:user', 'repo'] : ['offline_access'];
+  if (scopes === undefined) return config.authorizationMode === 'github-app';
+  const uniqueScopes = new Set(scopes);
+  return (
+    uniqueScopes.size === scopes.length &&
+    scopes.every((scope) => permittedScopes.includes(scope)) &&
+    (config.authorizationMode === 'github-app' || uniqueScopes.has('read:user'))
+  );
+}
+
 /*** Construct GitHub's fixed OAuth endpoint without accepting arbitrary caller query parameters. */
 function createAuthorizationUrl(
   clientId: string,
@@ -73,7 +94,7 @@ function createAuthorizationUrl(
   url.searchParams.set('client_id', clientId);
   url.searchParams.set('redirect_uri', attempt.redirectUri);
   url.searchParams.set('state', attempt.state);
-  if (scopes?.includes('offline_access')) url.searchParams.set('scope', 'offline_access');
+  if (scopes && scopes.length > 0) url.searchParams.set('scope', scopes.join(' '));
   return url.toString();
 }
 
