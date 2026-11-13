@@ -22,6 +22,16 @@ test('uses the canonical AuthPort and a confidential GitHub App authorization UR
   expect(fixture.attempts.size).toBe(1);
 });
 
+test('uses bound platform crypto when a host does not inject OAuth identifier factories', async () => {
+  const fixture = createFixture({ createAttemptId: undefined, createState: undefined });
+  const result = await startAuthorizationAsync(fixture);
+  expect(result.ok).toBe(true);
+  if (result.ok) {
+    expect(result.data.attemptId).not.toBe('attempt_1');
+    expect(new URL(result.data.authorizationUrl).searchParams.get('state')).not.toBe('state_1');
+  }
+});
+
 test('allows only GitHub and exact server-registered HTTPS callbacks', async () => {
   const fixture = createFixture();
   expect(

@@ -41,8 +41,8 @@ async function startAuthorizationAsync(
     );
 
   const attempt: GitHubAuthorizationAttempt = {
-    attemptId: (config.createAttemptId ?? crypto.randomUUID)(),
-    state: (config.createState ?? crypto.randomUUID)(),
+    attemptId: createOpaqueValue(config.createAttemptId),
+    state: createOpaqueValue(config.createState),
     redirectUri: input.redirectUri,
     expiresAt: (config.now ?? Date.now)() + (config.authorizationAttemptTtlMs ?? DEFAULT_TTL_MS),
   };
@@ -61,6 +61,11 @@ async function startAuthorizationAsync(
   } catch {
     return oauthStartError('authorization_failed', 'Unable to start GitHub authorization.');
   }
+}
+
+/*** Generate host-overridable opaque OAuth values without detaching the platform Crypto receiver. */
+function createOpaqueValue(factory: (() => string) | undefined): string {
+  return factory?.() ?? crypto.randomUUID();
 }
 
 /*** Restrict each GitHub authorization protocol to its documented, least-privilege scope vocabulary. */
