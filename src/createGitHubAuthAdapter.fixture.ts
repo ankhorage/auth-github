@@ -8,6 +8,7 @@ export function createFixture(overrides: Partial<GitHubAuthConfig> = {}) {
   const attempts = new Map<string, GitHubAuthorizationAttempt>();
   const state: FixtureState = { session: null, now: 1_000, tokenCalls: [] };
   const config: GitHubAuthConfig = {
+    authorizationMode: 'github-app',
     clientId: 'client_id',
     clientSecret: 'server_secret',
     redirectUris: ['https://atlas.example/auth/callback'],
