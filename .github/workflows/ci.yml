@@ -26,19 +26,7 @@ jobs:
         with:
           node-version: '24'
       - name: Install dependencies
-        run: bun install
-      - name: Capture autoformat and lockfile bootstrap evidence
-        run: |
-          bunx ankhorage-prettier --write src package.json tsconfig.json tsconfig.eslint.json eslint.config.mjs knip.config.ts paradox.config.ts docs AGENTS.md .github/workflows/ci.yml .changeset/config.json .changeset/initial-adapter.md
-          bunx ankhorage-eslint . --fix --max-warnings=0 || true
-          node - <<'NODE'
-          const fs = require('node:fs');
-          const cp = require('node:child_process');
-          const paths = cp.execFileSync('git', ['diff', '--name-only'], { encoding: 'utf8' }).split('\n').filter(Boolean);
-          const files = Object.fromEntries(paths.map(path => [path, fs.readFileSync(path, 'utf8')]));
-          if (fs.existsSync('bun.lock')) files['bun.lock'] = fs.readFileSync('bun.lock', 'utf8');
-          process.stdout.write('FORMATTED_EVIDENCE_JSON=' + JSON.stringify(files) + '\n');
-          NODE
+        run: bun install --frozen-lockfile
       - name: Build
         run: bun run build
       - name: Typecheck
@@ -63,9 +51,3 @@ jobs:
             bun add "$pack_dir"/*.tgz --ignore-scripts
             node --input-type=module -e "import('@ankhorage/auth-github').then(m => { if(typeof m.createGitHubAuthAdapter !== 'function') process.exit(1) })"
           )
-      - name: Upload generated initial Bun lock for bootstrap
-        uses: actions/upload-artifact@v4
-        with:
-          name: bootstrap-bun-lock
-          path: bun.lock
-          retention-days: 2

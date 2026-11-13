@@ -1,6 +1,10 @@
 import { expect, test } from 'bun:test';
 
-import { createCallback, createFixture, startAuthorizationAsync } from './createGitHubAuthAdapter.fixture.js';
+import {
+  createCallback,
+  createFixture,
+  startAuthorizationAsync,
+} from './createGitHubAuthAdapter.fixture.js';
 
 test('uses the canonical AuthPort and a confidential GitHub App authorization URL', async () => {
   const fixture = createFixture();

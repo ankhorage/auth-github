@@ -97,7 +97,8 @@ function readToken(value: unknown): {
     !hasValidTokenType(value) ||
     !hasValidRefreshToken(value) ||
     !hasValidTokenExpiration(value)
-  ) throw new Error('GitHub returned an invalid token response.');
+  )
+    throw new Error('GitHub returned an invalid token response.');
   return {
     accessToken: value.access_token,
     ...(typeof value.refresh_token === 'string' ? { refreshToken: value.refresh_token } : {}),
@@ -107,9 +108,14 @@ function readToken(value: unknown): {
 
 /*** Validate the signed-in GitHub account's stable numeric identity and login. */
 function isValidGitHubUser(value: unknown): value is GitHubUserRecord {
-  return isRecord(value) && typeof value.id === 'number' &&
-    Number.isSafeInteger(value.id) && value.id > 0 &&
-    typeof value.login === 'string' && value.login.trim() !== '';
+  return (
+    isRecord(value) &&
+    typeof value.id === 'number' &&
+    Number.isSafeInteger(value.id) &&
+    value.id > 0 &&
+    typeof value.login === 'string' &&
+    value.login.trim() !== ''
+  );
 }
 
 interface GitHubUserRecord extends Record<string, unknown> {
@@ -119,28 +125,35 @@ interface GitHubUserRecord extends Record<string, unknown> {
 
 /*** Require a non-empty opaque OAuth access token. */
 function hasValidAccessToken(
-  value: Record<string, unknown>
+  value: Record<string, unknown>,
 ): value is Record<string, unknown> & { access_token: string } {
   return typeof value.access_token === 'string' && value.access_token.length > 0;
 }
 
 /*** Only accept a bearer token when GitHub states a token type. */
 function hasValidTokenType(value: Record<string, unknown>): boolean {
-  return value.token_type === undefined ||
-    (typeof value.token_type === 'string' && value.token_type.toLowerCase() === 'bearer');
+  return (
+    value.token_type === undefined ||
+    (typeof value.token_type === 'string' && value.token_type.toLowerCase() === 'bearer')
+  );
 }
 
 /*** Reject refresh credentials of unexpected provider data types. */
 function hasValidRefreshToken(value: Record<string, unknown>): boolean {
-  return value.refresh_token === undefined ||
-    (typeof value.refresh_token === 'string' && value.refresh_token.length > 0);
+  return (
+    value.refresh_token === undefined ||
+    (typeof value.refresh_token === 'string' && value.refresh_token.length > 0)
+  );
 }
 
 /*** Accept optional positive integer GitHub access-token lifetimes. */
 function hasValidTokenExpiration(value: Record<string, unknown>): boolean {
-  return value.expires_in === undefined ||
+  return (
+    value.expires_in === undefined ||
     (typeof value.expires_in === 'number' &&
-    Number.isSafeInteger(value.expires_in) && value.expires_in > 0);
+      Number.isSafeInteger(value.expires_in) &&
+      value.expires_in > 0)
+  );
 }
 
 /*** Narrow untrusted provider JSON before inspecting its fields. */

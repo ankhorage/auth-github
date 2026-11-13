@@ -123,4 +123,3 @@ export function createCallback(code = 'code_1', state = 'state_1') {
     },
   };
 }
-
