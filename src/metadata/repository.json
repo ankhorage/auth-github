@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "kind": "adapter",
+  "title": "Ankhorage GitHub Auth",
+  "summary": "Implements the provider-neutral Ankhorage authentication port with GitHub App and OAuth App authorization.",
+  "purpose": "Provide a standalone server-side GitHub browser-authorization adapter with explicit host-owned session and one-time attempt persistence.",
+  "domain": "authentication",
+  "responsibilities": [
+    "Start and complete GitHub App or OAuth App browser authorization flows.",
+    "Exchange and refresh GitHub user tokens while preserving the authenticated user identity.",
+    "Normalize GitHub and session failures into provider-neutral authentication results.",
+    "Declare unsupported credential operations explicitly."
+  ],
+  "boundaries": [
+    "Does not own repository discovery, GitHub API rate-limit handling, or repository materialization.",
+    "Does not own durable sessions or authorization-attempt storage.",
+    "Does not implement password, registration, password-reset, or OTP authentication."
+  ],
+  "audience": [
+    "Server applications that authenticate GitHub users through the Ankhorage authentication port.",
+    "Hosts that provide secure session and atomic one-time attempt persistence."
+  ],
+  "useCases": [
+    "Authenticate a user through a GitHub App user-authorization flow.",
+    "Authenticate a user through a classic GitHub OAuth App flow.",
+    "Read, refresh, and clear a host-persisted GitHub session."
+  ],
+  "architecture": {
+    "role": "Provider adapter at the GitHub OAuth boundary for the published AuthPort.",
+    "invariants": [
+      "Client secrets and user tokens remain on the server-side provider boundary.",
+      "Redirect URIs are exact allowlisted HTTPS URLs.",
+      "Authorization attempts are durable, short-lived, and atomically consumed once."
+    ]
+  },
+  "implements": [
+    {
+      "packageName": "@ankhorage/auth",
+      "interfaceId": "AuthPort"
+    }
+  ],
+  "constraints": {
+    "configuration": [
+      "Requires an explicit GitHub App or OAuth App mode, client credentials, HTTPS redirect allowlist, and host-provided stores."
+    ],
+    "security": [
+      "Tokens and client secrets are never placed in browser URLs, diagnostics, generated documentation, or shared process-global storage.",
+      "Authorization callbacks use one-time state bound to an explicitly registered redirect URI."
+    ],
+    "limitations": [
+      "The generic AuthPort credential and OTP operations return unsupported-operation results."
+    ]
+  }
+}
