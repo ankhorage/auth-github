@@ -1,5 +1,11 @@
 # @ankhorage/auth-github
 
+## 0.2.1
+
+### Patch Changes
+
+- c88fb5b: Add canonical repository metadata for organization discovery and documentation.
+
 ## 0.2.0
 
 ### Minor Changes
