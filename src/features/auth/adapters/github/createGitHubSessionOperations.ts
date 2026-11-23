@@ -64,7 +64,7 @@ async function refreshSessionAsync(
   try {
     const stored = await readStoredSessionAsync(config);
     if (stored === null) return { ok: true, data: null };
-    const session = stored.session;
+    const { session } = stored;
     if (!session.refreshToken) {
       return session.expiresAt === undefined || session.expiresAt > (config.now ?? Date.now)()
         ? { ok: true, data: session }

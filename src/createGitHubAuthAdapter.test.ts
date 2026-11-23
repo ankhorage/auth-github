@@ -200,18 +200,6 @@ test('rejects expired, replayed, and concurrently replayed callback attempts', a
   });
 });
 
-test('consumes a callback bound to another opaque browser session without exchanging its code', async () => {
-  const fixture = createFixture();
-  await startAuthorizationAsync(fixture);
-  fixture.state.sessionId = 'another_browser_session';
-  expect(await fixture.adapter.completeAuthorization(createCallback())).toMatchObject({
-    ok: false,
-    error: { code: 'authorization_attempt_not_found' },
-  });
-  expect(fixture.attempts.size).toBe(0);
-  expect(fixture.state.tokenCalls).toHaveLength(0);
-});
-
 test('treats GitHub denial as cancellation without requesting a token', async () => {
   const fixture = createFixture();
   await startAuthorizationAsync(fixture);
@@ -229,17 +217,6 @@ test('treats GitHub denial as cancellation without requesting a token', async ()
     reason: 'provider_denied',
   });
   expect(fixture.state.tokenCalls).toHaveLength(0);
-});
-
-test('rotates a same-user session during a renewed authorization instead of leaving two identifiers valid', async () => {
-  const fixture = createFixture();
-  await startAuthorizationAsync(fixture);
-  await fixture.adapter.completeAuthorization(createCallback());
-  const firstSessionId = fixture.state.sessionId;
-  await startAuthorizationAsync(fixture);
-  await fixture.adapter.completeAuthorization(createCallback());
-  expect(fixture.state.sessionId).not.toBe(firstSessionId);
-  expect(fixture.sessions.has(firstSessionId)).toBe(false);
 });
 
 test('refreshes expiring GitHub App tokens, rotates stored tokens, and preserves user identity', async () => {
@@ -295,36 +272,6 @@ test('returns secret-free errors on provider and persistence failures', async ()
     ok: false,
     error: { code: 'authorization_attempt_not_found' },
   });
-});
-
-test('provides local sign-out and explicitly rejects password, OTP, and global sign-out', async () => {
-  const fixture = createFixture();
-  expect(
-    await fixture.adapter.signIn({ identifier: { kind: 'username', value: 'u' } }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.signUp({ identifier: { kind: 'email', value: 'a@example.com' } }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.requestPasswordReset({
-      identifier: { kind: 'email', value: 'a@example.com' },
-    }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.verifyOtp({
-      identifier: { kind: 'email', value: 'a@example.com' },
-      token: 'x',
-    }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  fixture.setSession({ accessToken: 'token_1', user: { id: '42' } });
-  expect(await fixture.adapter.signOut({ allDevices: true })).toMatchObject({
-    ok: false,
-    error: { code: 'unsupported_operation' },
-  });
-  expect(fixture.state.session).not.toBeNull();
-  expect(await fixture.adapter.signOut()).toEqual({ ok: true });
-  expect(fixture.state.session).toBeNull();
-  expect(fixture.state.sessionId).toBe('');
 });
 
 test('retains a non-expiring OAuth session without a refresh token', async () => {

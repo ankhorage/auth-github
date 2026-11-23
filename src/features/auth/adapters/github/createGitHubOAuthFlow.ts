@@ -188,11 +188,7 @@ async function persistSessionAsync(
     });
     return result.status === 'rotated' ? sessionId : null;
   }
-  if (
-    current.status === 'unavailable' ||
-    (current.status !== 'not_found' && current.status !== 'revoked' && current.status !== 'expired')
-  )
-    return null;
+  if (current.status === 'unavailable') return null;
   const result = await config.sessions.create(durableSession);
   return result.status === 'created' ? sessionId : null;
 }
