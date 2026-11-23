@@ -2,8 +2,7 @@ export { createGitHubAuthAdapter } from './features/auth/adapters/github/createG
 export type {
   GitHubAppAuthConfig,
   GitHubAuthConfig,
-  GitHubAuthorizationAttempt,
-  GitHubAuthorizationAttemptStore,
   GitHubOAuthAppConfig,
-  GitHubSessionStore,
+  GitHubPayloadEncryption,
+  GitHubSessionBinding,
 } from './types/github.js';

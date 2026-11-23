@@ -1,25 +1,20 @@
-import type { AuthSession } from '@ankhorage/contracts/auth';
+import type {
+  AuthorizationAttemptPersistencePort,
+  EncryptedPayload,
+  SessionPersistencePort,
+} from '@ankhorage/auth/persistence';
 
-/*** One short-lived GitHub authorization bound to a host-managed browser session. */
-export interface GitHubAuthorizationAttempt {
-  readonly attemptId: string;
-  readonly state: string;
-  readonly redirectUri: string;
-  readonly expiresAt: number;
+/*** Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement. */
+export interface GitHubSessionBinding {
+  readonly sessionId: string;
+  replaceSessionId(sessionId: string): Promise<void>;
+  clearSessionId(): Promise<void>;
 }
 
-/*** Durable attempt storage; consume must atomically delete before returning. */
-export interface GitHubAuthorizationAttemptStore {
-  create(attempt: GitHubAuthorizationAttempt): Promise<void>;
-  consume(attemptId: string, now: number): Promise<GitHubAuthorizationAttempt | null>;
-  purgeExpired(now: number): Promise<void>;
-}
-
-/*** Request-scoped server session persistence; never a shared global user slot. */
-export interface GitHubSessionStore {
-  get(): Promise<AuthSession | null>;
-  save(session: AuthSession): Promise<void>;
-  clear(): Promise<void>;
+/*** Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage. */
+export interface GitHubPayloadEncryption {
+  encrypt(payload: unknown): Promise<EncryptedPayload>;
+  decrypt(payload: EncryptedPayload): Promise<unknown>;
 }
 
 /*** Host-supplied confidential GitHub App configuration and independently scoped persistence. */
@@ -27,11 +22,14 @@ interface GitHubAuthConfigBase {
   readonly clientId: string;
   readonly clientSecret: string;
   readonly redirectUris: readonly string[];
-  readonly authorizationAttempts: GitHubAuthorizationAttemptStore;
-  readonly sessions: GitHubSessionStore;
+  readonly authorizationAttempts: AuthorizationAttemptPersistencePort;
+  readonly sessions: SessionPersistencePort;
+  readonly session: GitHubSessionBinding;
+  readonly payloadEncryption: GitHubPayloadEncryption;
   readonly fetcher?: typeof fetch;
   readonly now?: () => number;
   readonly createAttemptId?: () => string;
+  readonly createSessionId?: () => string;
   readonly createState?: () => string;
   readonly authorizationAttemptTtlMs?: number;
   readonly requestTimeoutMs?: number;

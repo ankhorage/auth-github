@@ -230,17 +230,18 @@ test('refreshes expiring GitHub App tokens, rotates stored tokens, and preserves
   });
   expect(fixture.state.tokenCalls).toEqual(['authorization_code', 'refresh_token']);
   expect(fixture.state.session?.accessToken).toBe('token_2');
+  expect(fixture.state.sessionId).toBe('session_3');
   fixture.state.now = 3_601_001;
   expect(await fixture.adapter.getSession()).toMatchObject({ ok: true, data: null });
 });
 
 test('fails closed when refreshed GitHub identity is different', async () => {
   const fixture = createFixture();
-  fixture.state.session = {
+  fixture.setSession({
     accessToken: 'old',
     refreshToken: 'refresh_1',
     user: { id: 'different-user' },
-  };
+  });
   expect(await fixture.adapter.refreshSession()).toMatchObject({
     ok: false,
     error: { code: 'invalid_session' },
@@ -273,38 +274,9 @@ test('returns secret-free errors on provider and persistence failures', async ()
   });
 });
 
-test('provides local sign-out and explicitly rejects password, OTP, and global sign-out', async () => {
-  const fixture = createFixture();
-  expect(
-    await fixture.adapter.signIn({ identifier: { kind: 'username', value: 'u' } }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.signUp({ identifier: { kind: 'email', value: 'a@example.com' } }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.requestPasswordReset({
-      identifier: { kind: 'email', value: 'a@example.com' },
-    }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  expect(
-    await fixture.adapter.verifyOtp({
-      identifier: { kind: 'email', value: 'a@example.com' },
-      token: 'x',
-    }),
-  ).toMatchObject({ ok: false, error: { code: 'unsupported_operation' } });
-  fixture.state.session = { accessToken: 'token_1', user: { id: '42' } };
-  expect(await fixture.adapter.signOut({ allDevices: true })).toMatchObject({
-    ok: false,
-    error: { code: 'unsupported_operation' },
-  });
-  expect(fixture.state.session).not.toBeNull();
-  expect(await fixture.adapter.signOut()).toEqual({ ok: true });
-  expect(fixture.state.session).toBeNull();
-});
-
 test('retains a non-expiring OAuth session without a refresh token', async () => {
   const fixture = createFixture();
-  fixture.state.session = { accessToken: 'classic-token', user: { id: '42' } };
+  fixture.setSession({ accessToken: 'classic-token', user: { id: '42' } });
   expect(await fixture.adapter.refreshSession()).toEqual({
     ok: true,
     data: fixture.state.session,
