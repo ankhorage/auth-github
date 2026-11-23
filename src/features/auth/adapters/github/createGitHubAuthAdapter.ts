@@ -23,6 +23,7 @@ function validateConfig(config: GitHubAuthConfig): void {
   if (
     !config.clientId.trim() ||
     !config.clientSecret.trim() ||
+    !config.session.sessionId.trim() ||
     config.redirectUris.length === 0 ||
     !isOptionalPositiveInteger(config.authorizationAttemptTtlMs) ||
     !isOptionalPositiveInteger(config.requestTimeoutMs)

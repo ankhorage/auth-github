@@ -1,16 +1,19 @@
 import type { AuthPort } from '@ankhorage/auth';
+import type { DurableSession } from '@ankhorage/auth/persistence';
 import type {
   AuthOAuthCompletionResult,
   AuthOAuthError,
   AuthOAuthStartResult,
+  AuthSession,
   CompleteOAuthAuthorizationInput,
   StartOAuthAuthorizationInput,
 } from '@ankhorage/contracts/auth';
 
-import type { GitHubAuthConfig, GitHubAuthorizationAttempt } from '../../../../types/github.js';
+import type { GitHubAuthConfig } from '../../../../types/github.js';
 import { createGitHubOAuthGateway } from './createGitHubOAuthGateway.js';
 
 const DEFAULT_TTL_MS = 600_000;
+const MAX_DATE_MS = 8_640_000_000_000_000;
 
 /*** Provide OAuth start/completion using durable one-use attempts and verified GitHub identity. */
 export function createGitHubOAuthFlow(
@@ -40,15 +43,21 @@ async function startAuthorizationAsync(
       'Unsupported GitHub App authorization parameters.',
     );
 
-  const attempt: GitHubAuthorizationAttempt = {
+  const now = (config.now ?? Date.now)();
+  const attempt = {
     attemptId: createOpaqueValue(config.createAttemptId),
     state: createOpaqueValue(config.createState),
     redirectUri: input.redirectUri,
-    expiresAt: (config.now ?? Date.now)() + (config.authorizationAttemptTtlMs ?? DEFAULT_TTL_MS),
   };
   try {
-    await config.authorizationAttempts.purgeExpired((config.now ?? Date.now)());
-    await config.authorizationAttempts.create(attempt);
+    const result = await config.authorizationAttempts.create({
+      attemptId: attempt.attemptId,
+      sessionId: config.session.sessionId,
+      encryptedPayload: await config.payloadEncryption.encrypt(attempt),
+      expiresAt: now + (config.authorizationAttemptTtlMs ?? DEFAULT_TTL_MS),
+    });
+    if (result.status !== 'created')
+      return oauthStartError('authorization_failed', 'Unable to start GitHub authorization.');
     return {
       ok: true,
       data: {
@@ -87,7 +96,7 @@ function hasSupportedScopes(
 /*** Construct GitHub's fixed OAuth endpoint without accepting arbitrary caller query parameters. */
 function createAuthorizationUrl(
   clientId: string,
-  attempt: GitHubAuthorizationAttempt,
+  attempt: { readonly state: string; readonly redirectUri: string },
   scopes: readonly string[] | undefined,
 ): string {
   const url = new URL('https://github.com/login/oauth/authorize');
@@ -119,7 +128,9 @@ async function completeAuthorizationAsync(
     const gateway = createGitHubOAuthGateway(config);
     const session = await gateway.exchangeCodeAsync(callback.code, attempt.redirectUri);
     try {
-      await config.sessions.save(session);
+      const sessionId = await persistSessionAsync(config, session);
+      if (sessionId === null) return oauthError('session_persistence_failed', 'session');
+      await config.session.replaceSessionId(sessionId);
     } catch {
       return oauthError('session_persistence_failed', 'session');
     }
@@ -133,12 +144,76 @@ async function completeAuthorizationAsync(
 async function consumeAttemptAsync(
   config: GitHubAuthConfig,
   attemptId: string,
-): Promise<GitHubAuthorizationAttempt | null> {
+): Promise<{
+  readonly attemptId: string;
+  readonly state: string;
+  readonly redirectUri: string;
+} | null> {
   try {
-    return await config.authorizationAttempts.consume(attemptId, (config.now ?? Date.now)());
+    const result = await config.authorizationAttempts.consume({
+      attemptId,
+      sessionId: config.session.sessionId,
+      now: (config.now ?? Date.now)(),
+    });
+    if (result.status !== 'consumed') return null;
+    const payload = await config.payloadEncryption.decrypt(result.attempt.encryptedPayload);
+    return isAttemptPayload(payload, attemptId) ? payload : null;
   } catch {
     return null;
   }
+}
+
+/*** Create or atomically rotate a verified user's opaque durable session before binding it to the browser. */
+async function persistSessionAsync(
+  config: GitHubAuthConfig,
+  session: AuthSession,
+): Promise<string | null> {
+  const now = (config.now ?? Date.now)();
+  const sessionId = createOpaqueValue(config.createSessionId);
+  const durableSession: DurableSession = {
+    sessionId,
+    subject: { userId: session.user.id },
+    encryptedPayload: await config.payloadEncryption.encrypt(session),
+    createdAt: now,
+    expiresAt: session.expiresAt ?? MAX_DATE_MS,
+  };
+  const current = await config.sessions.read(config.session.sessionId, now);
+  if (current.status === 'found') {
+    if (current.session.subject.userId !== session.user.id) return null;
+    const result = await config.sessions.rotate({
+      replacedSessionId: current.session.sessionId,
+      replacement: durableSession,
+      subject: current.session.subject,
+      now,
+    });
+    return result.status === 'rotated' ? sessionId : null;
+  }
+  if (
+    current.status === 'unavailable' ||
+    (current.status !== 'not_found' && current.status !== 'revoked' && current.status !== 'expired')
+  )
+    return null;
+  const result = await config.sessions.create(durableSession);
+  return result.status === 'created' ? sessionId : null;
+}
+
+/*** Reject decrypted attempt payloads that are malformed or no longer match the consumed record. */
+function isAttemptPayload(
+  value: unknown,
+  attemptId: string,
+): value is { readonly attemptId: string; readonly state: string; readonly redirectUri: string } {
+  return (
+    isRecord(value) &&
+    value.attemptId === attemptId &&
+    typeof value.state === 'string' &&
+    value.state.length > 0 &&
+    typeof value.redirectUri === 'string'
+  );
+}
+
+/*** Narrow encrypted host payloads before reading their OAuth fields. */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /*** Bind a callback to its configured HTTPS origin/path and a single OAuth state value. */
