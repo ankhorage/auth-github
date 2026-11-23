@@ -14,7 +14,7 @@
     {
       "id": "npm",
       "label": "npm",
-      "value": "v0.2.1",
+      "value": "v0.3.0",
       "color": "cb3837"
     },
     {
@@ -50,8 +50,8 @@
     {
       "id": "tests",
       "label": "tests",
-      "value": "checked",
-      "color": "0a7f3f"
+      "value": "configured",
+      "color": "6f42c1"
     },
     {
       "id": "docs",
@@ -124,10 +124,9 @@
         "createGitHubAuthAdapter",
         "GitHubAppAuthConfig",
         "GitHubAuthConfig",
-        "GitHubAuthorizationAttempt",
-        "GitHubAuthorizationAttemptStore",
         "GitHubOAuthAppConfig",
-        "GitHubSessionStore"
+        "GitHubPayloadEncryption",
+        "GitHubSessionBinding"
       ]
     },
     {
@@ -137,10 +136,9 @@
       "exports": [
         "GitHubAppAuthConfig",
         "GitHubAuthConfig",
-        "GitHubAuthorizationAttempt",
-        "GitHubAuthorizationAttemptStore",
         "GitHubOAuthAppConfig",
-        "GitHubSessionStore"
+        "GitHubPayloadEncryption",
+        "GitHubSessionBinding"
       ]
     }
   ],
@@ -194,22 +192,22 @@
       "modulePath": "src/types/github.ts",
       "sourceLocation": {
         "filePath": "src/types/github.ts",
-        "line": 41,
+        "line": 39,
         "column": 1
       },
       "exportPaths": [
         "src/index.ts"
       ],
       "relatedSymbols": [
-        "GitHubAuthorizationAttemptStore",
-        "GitHubSessionStore"
+        "GitHubPayloadEncryption",
+        "GitHubSessionBinding"
       ],
       "signatures": [],
       "members": [
         {
           "name": "authorizationAttempts",
           "kind": "property",
-          "type": "GitHubAuthorizationAttemptStore",
+          "type": "AuthorizationAttemptPersistencePort",
           "required": true,
           "description": null
         },
@@ -249,6 +247,13 @@
           "description": null
         },
         {
+          "name": "createSessionId",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
           "name": "createState",
           "kind": "property",
           "type": "(() => string) | undefined",
@@ -270,6 +275,13 @@
           "description": null
         },
         {
+          "name": "payloadEncryption",
+          "kind": "property",
+          "type": "GitHubPayloadEncryption",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "redirectUris",
           "kind": "property",
           "type": "readonly string[]",
@@ -284,9 +296,16 @@
           "description": null
         },
         {
+          "name": "session",
+          "kind": "property",
+          "type": "GitHubSessionBinding",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "sessions",
           "kind": "property",
-          "type": "GitHubSessionStore",
+          "type": "SessionPersistencePort",
           "required": true,
           "description": null
         }
@@ -304,7 +323,7 @@
       "modulePath": "src/types/github.ts",
       "sourceLocation": {
         "filePath": "src/types/github.ts",
-        "line": 51,
+        "line": 49,
         "column": 1
       },
       "exportPaths": [
@@ -313,103 +332,6 @@
       "relatedSymbols": [],
       "signatures": [],
       "members": [],
-      "structuredRows": []
-    },
-    {
-      "name": "GitHubAuthorizationAttempt",
-      "title": null,
-      "description": "One short-lived GitHub authorization bound to a host-managed browser session.",
-      "isReadme": false,
-      "see": [],
-      "security": [],
-      "kind": "type",
-      "modulePath": "src/types/github.ts",
-      "sourceLocation": {
-        "filePath": "src/types/github.ts",
-        "line": 4,
-        "column": 1
-      },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [],
-      "signatures": [],
-      "members": [
-        {
-          "name": "attemptId",
-          "kind": "property",
-          "type": "string",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "expiresAt",
-          "kind": "property",
-          "type": "number",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "redirectUri",
-          "kind": "property",
-          "type": "string",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "state",
-          "kind": "property",
-          "type": "string",
-          "required": true,
-          "description": null
-        }
-      ],
-      "structuredRows": []
-    },
-    {
-      "name": "GitHubAuthorizationAttemptStore",
-      "title": null,
-      "description": "Durable attempt storage; consume must atomically delete before returning.",
-      "isReadme": false,
-      "see": [],
-      "security": [],
-      "kind": "type",
-      "modulePath": "src/types/github.ts",
-      "sourceLocation": {
-        "filePath": "src/types/github.ts",
-        "line": 12,
-        "column": 1
-      },
-      "exportPaths": [
-        "src/index.ts"
-      ],
-      "relatedSymbols": [
-        "GitHubAuthorizationAttempt"
-      ],
-      "signatures": [],
-      "members": [
-        {
-          "name": "consume",
-          "kind": "method",
-          "type": "(attemptId: string, now: number) => Promise<GitHubAuthorizationAttempt | null>",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "create",
-          "kind": "method",
-          "type": "(attempt: GitHubAuthorizationAttempt) => Promise<void>",
-          "required": true,
-          "description": null
-        },
-        {
-          "name": "purgeExpired",
-          "kind": "method",
-          "type": "(now: number) => Promise<void>",
-          "required": true,
-          "description": null
-        }
-      ],
       "structuredRows": []
     },
     {
@@ -423,22 +345,22 @@
       "modulePath": "src/types/github.ts",
       "sourceLocation": {
         "filePath": "src/types/github.ts",
-        "line": 46,
+        "line": 44,
         "column": 1
       },
       "exportPaths": [
         "src/index.ts"
       ],
       "relatedSymbols": [
-        "GitHubAuthorizationAttemptStore",
-        "GitHubSessionStore"
+        "GitHubPayloadEncryption",
+        "GitHubSessionBinding"
       ],
       "signatures": [],
       "members": [
         {
           "name": "authorizationAttempts",
           "kind": "property",
-          "type": "GitHubAuthorizationAttemptStore",
+          "type": "AuthorizationAttemptPersistencePort",
           "required": true,
           "description": null
         },
@@ -478,6 +400,13 @@
           "description": null
         },
         {
+          "name": "createSessionId",
+          "kind": "property",
+          "type": "(() => string) | undefined",
+          "required": false,
+          "description": null
+        },
+        {
           "name": "createState",
           "kind": "property",
           "type": "(() => string) | undefined",
@@ -499,6 +428,13 @@
           "description": null
         },
         {
+          "name": "payloadEncryption",
+          "kind": "property",
+          "type": "GitHubPayloadEncryption",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "redirectUris",
           "kind": "property",
           "type": "readonly string[]",
@@ -513,9 +449,16 @@
           "description": null
         },
         {
+          "name": "session",
+          "kind": "property",
+          "type": "GitHubSessionBinding",
+          "required": true,
+          "description": null
+        },
+        {
           "name": "sessions",
           "kind": "property",
-          "type": "GitHubSessionStore",
+          "type": "SessionPersistencePort",
           "required": true,
           "description": null
         }
@@ -523,9 +466,9 @@
       "structuredRows": []
     },
     {
-      "name": "GitHubSessionStore",
+      "name": "GitHubPayloadEncryption",
       "title": null,
-      "description": "Request-scoped server session persistence; never a shared global user slot.",
+      "description": "Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage.",
       "isReadme": false,
       "see": [],
       "security": [],
@@ -533,7 +476,7 @@
       "modulePath": "src/types/github.ts",
       "sourceLocation": {
         "filePath": "src/types/github.ts",
-        "line": 19,
+        "line": 15,
         "column": 1
       },
       "exportPaths": [
@@ -543,23 +486,60 @@
       "signatures": [],
       "members": [
         {
-          "name": "clear",
+          "name": "decrypt",
+          "kind": "method",
+          "type": "(payload: EncryptedPayload) => Promise<unknown>",
+          "required": true,
+          "description": null
+        },
+        {
+          "name": "encrypt",
+          "kind": "method",
+          "type": "(payload: unknown) => Promise<EncryptedPayload>",
+          "required": true,
+          "description": null
+        }
+      ],
+      "structuredRows": []
+    },
+    {
+      "name": "GitHubSessionBinding",
+      "title": null,
+      "description": "Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement.",
+      "isReadme": false,
+      "see": [],
+      "security": [],
+      "kind": "type",
+      "modulePath": "src/types/github.ts",
+      "sourceLocation": {
+        "filePath": "src/types/github.ts",
+        "line": 8,
+        "column": 1
+      },
+      "exportPaths": [
+        "src/index.ts"
+      ],
+      "relatedSymbols": [],
+      "signatures": [],
+      "members": [
+        {
+          "name": "clearSessionId",
           "kind": "method",
           "type": "() => Promise<void>",
           "required": true,
           "description": null
         },
         {
-          "name": "get",
+          "name": "replaceSessionId",
           "kind": "method",
-          "type": "() => Promise<AuthSession | null>",
+          "type": "(sessionId: string) => Promise<void>",
           "required": true,
           "description": null
         },
         {
-          "name": "save",
-          "kind": "method",
-          "type": "(session: AuthSession) => Promise<void>",
+          "name": "sessionId",
+          "kind": "property",
+          "type": "string",
           "required": true,
           "description": null
         }
@@ -598,7 +578,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
-        "line": 36,
+        "line": 37,
         "column": 1
       }
     },
@@ -609,7 +589,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
-        "line": 41,
+        "line": 42,
         "column": 1
       }
     },
@@ -620,7 +600,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubAuthAdapter.ts",
-        "line": 58,
+        "line": 59,
         "column": 1
       }
     },
@@ -631,7 +611,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 16,
+        "line": 19,
         "column": 1
       }
     },
@@ -642,7 +622,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 26,
+        "line": 29,
         "column": 1
       }
     },
@@ -653,7 +633,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 67,
+        "line": 76,
         "column": 1
       }
     },
@@ -664,7 +644,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 72,
+        "line": 81,
         "column": 1
       }
     },
@@ -675,7 +655,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 88,
+        "line": 97,
         "column": 1
       }
     },
@@ -686,7 +666,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 102,
+        "line": 111,
         "column": 1
       }
     },
@@ -697,7 +677,40 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 133,
+        "line": 144,
+        "column": 1
+      }
+    },
+    {
+      "name": "persistSessionAsync",
+      "description": "Create or atomically rotate a verified user's opaque durable session before binding it to the browser.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 167,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAttemptPayload",
+      "description": "Reject decrypted attempt payloads that are malformed or no longer match the consumed record.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 197,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow encrypted host payloads before reading their OAuth fields.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
+        "line": 211,
         "column": 1
       }
     },
@@ -708,7 +721,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 145,
+        "line": 216,
         "column": 1
       }
     },
@@ -719,7 +732,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 172,
+        "line": 243,
         "column": 1
       }
     },
@@ -730,7 +743,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts",
-        "line": 190,
+        "line": 261,
         "column": 1
       }
     },
@@ -851,7 +864,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
-        "line": 8,
+        "line": 9,
         "column": 1
       }
     },
@@ -862,7 +875,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
-        "line": 20,
+        "line": 21,
         "column": 1
       }
     },
@@ -873,7 +886,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
-        "line": 35,
+        "line": 50,
         "column": 1
       }
     },
@@ -884,7 +897,51 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
-        "line": 47,
+        "line": 60,
+        "column": 1
+      }
+    },
+    {
+      "name": "readStoredSessionAsync",
+      "description": "Read and decrypt only a currently valid session whose payload identity matches its durable owner.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 99,
+        "column": 1
+      }
+    },
+    {
+      "name": "createOpaqueValue",
+      "description": "Generate a host-overridable opaque session identifier without retaining it in process memory.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 113,
+        "column": 1
+      }
+    },
+    {
+      "name": "isAuthSession",
+      "description": "Verify decrypted storage data before it can authorize a GitHub user or refresh credential.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 118,
+        "column": 1
+      }
+    },
+    {
+      "name": "isRecord",
+      "description": "Narrow untrusted decrypted data without accepting arrays or null as session records.",
+      "see": [],
+      "security": [],
+      "sourceLocation": {
+        "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
+        "line": 130,
         "column": 1
       }
     },
@@ -895,7 +952,7 @@
       "security": [],
       "sourceLocation": {
         "filePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts",
-        "line": 68,
+        "line": 135,
         "column": 1
       }
     }
@@ -1038,26 +1095,20 @@
       },
       {
         "fromSymbol": "startAuthorizationAsync",
-        "toSymbol": "createOpaqueValue",
-        "callExpression": "createOpaqueValue",
-        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
-      },
-      {
-        "fromSymbol": "startAuthorizationAsync",
         "toSymbol": "__type",
         "callExpression": "(config.now ?? Date.now)",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
         "fromSymbol": "startAuthorizationAsync",
-        "toSymbol": "purgeExpired",
-        "callExpression": "config.authorizationAttempts.purgeExpired",
+        "toSymbol": "createOpaqueValue",
+        "callExpression": "createOpaqueValue",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
         "fromSymbol": "startAuthorizationAsync",
-        "toSymbol": "create",
-        "callExpression": "config.authorizationAttempts.create",
+        "toSymbol": "encrypt",
+        "callExpression": "config.payloadEncryption.encrypt",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
@@ -1104,20 +1155,56 @@
       },
       {
         "fromSymbol": "completeAuthorizationAsync",
-        "toSymbol": "save",
-        "callExpression": "config.sessions.save",
+        "toSymbol": "persistSessionAsync",
+        "callExpression": "persistSessionAsync",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
-        "fromSymbol": "consumeAttemptAsync",
-        "toSymbol": "consume",
-        "callExpression": "config.authorizationAttempts.consume",
+        "fromSymbol": "completeAuthorizationAsync",
+        "toSymbol": "replaceSessionId",
+        "callExpression": "config.session.replaceSessionId",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
         "fromSymbol": "consumeAttemptAsync",
         "toSymbol": "__type",
         "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "consumeAttemptAsync",
+        "toSymbol": "decrypt",
+        "callExpression": "config.payloadEncryption.decrypt",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "consumeAttemptAsync",
+        "toSymbol": "isAttemptPayload",
+        "callExpression": "isAttemptPayload",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "persistSessionAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "persistSessionAsync",
+        "toSymbol": "createOpaqueValue",
+        "callExpression": "createOpaqueValue",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "persistSessionAsync",
+        "toSymbol": "encrypt",
+        "callExpression": "config.payloadEncryption.encrypt",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
+      },
+      {
+        "fromSymbol": "isAttemptPayload",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/features/auth/adapters/github/createGitHubOAuthFlow.ts"
       },
       {
@@ -1218,8 +1305,8 @@
       },
       {
         "fromSymbol": "signOutAsync",
-        "toSymbol": "clear",
-        "callExpression": "config.sessions.clear",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       },
       {
@@ -1229,15 +1316,15 @@
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       },
       {
-        "fromSymbol": "getSessionAsync",
-        "toSymbol": "get",
-        "callExpression": "config.sessions.get",
+        "fromSymbol": "signOutAsync",
+        "toSymbol": "clearSessionId",
+        "callExpression": "config.session.clearSessionId",
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       },
       {
         "fromSymbol": "getSessionAsync",
-        "toSymbol": "__type",
-        "callExpression": "(config.now ?? Date.now)",
+        "toSymbol": "readStoredSessionAsync",
+        "callExpression": "readStoredSessionAsync",
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       },
       {
@@ -1248,8 +1335,8 @@
       },
       {
         "fromSymbol": "refreshSessionAsync",
-        "toSymbol": "get",
-        "callExpression": "config.sessions.get",
+        "toSymbol": "readStoredSessionAsync",
+        "callExpression": "readStoredSessionAsync",
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       },
       {
@@ -1272,8 +1359,50 @@
       },
       {
         "fromSymbol": "refreshSessionAsync",
-        "toSymbol": "save",
-        "callExpression": "config.sessions.save",
+        "toSymbol": "createOpaqueValue",
+        "callExpression": "createOpaqueValue",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "encrypt",
+        "callExpression": "config.payloadEncryption.encrypt",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "refreshSessionAsync",
+        "toSymbol": "replaceSessionId",
+        "callExpression": "config.session.replaceSessionId",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "readStoredSessionAsync",
+        "toSymbol": "__type",
+        "callExpression": "(config.now ?? Date.now)",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "readStoredSessionAsync",
+        "toSymbol": "decrypt",
+        "callExpression": "config.payloadEncryption.decrypt",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "readStoredSessionAsync",
+        "toSymbol": "isAuthSession",
+        "callExpression": "isAuthSession",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "createOpaqueValue",
+        "toSymbol": "factory",
+        "callExpression": "factory",
+        "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
+      },
+      {
+        "fromSymbol": "isAuthSession",
+        "toSymbol": "isRecord",
+        "callExpression": "isRecord",
         "sourcePath": "src/features/auth/adapters/github/createGitHubSessionOperations.ts"
       }
     ],
@@ -1290,32 +1419,47 @@
       },
       {
         "fromSymbol": "GitHubAppAuthConfig",
-        "toType": "GitHubAuthorizationAttemptStore",
+        "toType": "AuthorizationAttemptPersistencePort",
         "sourcePath": "src/types/github.ts"
       },
       {
         "fromSymbol": "GitHubAppAuthConfig",
-        "toType": "GitHubSessionStore",
+        "toType": "GitHubPayloadEncryption",
         "sourcePath": "src/types/github.ts"
       },
       {
-        "fromSymbol": "GitHubAuthorizationAttemptStore",
-        "toType": "GitHubAuthorizationAttempt",
+        "fromSymbol": "GitHubAppAuthConfig",
+        "toType": "GitHubSessionBinding",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubAppAuthConfig",
+        "toType": "SessionPersistencePort",
         "sourcePath": "src/types/github.ts"
       },
       {
         "fromSymbol": "GitHubOAuthAppConfig",
-        "toType": "GitHubAuthorizationAttemptStore",
+        "toType": "AuthorizationAttemptPersistencePort",
         "sourcePath": "src/types/github.ts"
       },
       {
         "fromSymbol": "GitHubOAuthAppConfig",
-        "toType": "GitHubSessionStore",
+        "toType": "GitHubPayloadEncryption",
         "sourcePath": "src/types/github.ts"
       },
       {
-        "fromSymbol": "GitHubSessionStore",
-        "toType": "AuthSession",
+        "fromSymbol": "GitHubOAuthAppConfig",
+        "toType": "GitHubSessionBinding",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubOAuthAppConfig",
+        "toType": "SessionPersistencePort",
+        "sourcePath": "src/types/github.ts"
+      },
+      {
+        "fromSymbol": "GitHubPayloadEncryption",
+        "toType": "EncryptedPayload",
         "sourcePath": "src/types/github.ts"
       }
     ],

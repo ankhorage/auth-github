@@ -10,18 +10,15 @@ graph LR
   export_createGitHubAuthAdapter -.-> export_GitHubAuthConfig
   export_GitHubAppAuthConfig["GitHubAppAuthConfig"]
   module_src_types_github_ts --> export_GitHubAppAuthConfig
-  export_GitHubAppAuthConfig -.-> export_GitHubAuthorizationAttemptStore
-  export_GitHubAppAuthConfig -.-> export_GitHubSessionStore
+  export_GitHubAppAuthConfig -.-> export_GitHubPayloadEncryption
+  export_GitHubAppAuthConfig -.-> export_GitHubSessionBinding
   export_GitHubAuthConfig["GitHubAuthConfig"]
   module_src_types_github_ts --> export_GitHubAuthConfig
-  export_GitHubAuthorizationAttempt["GitHubAuthorizationAttempt"]
-  module_src_types_github_ts --> export_GitHubAuthorizationAttempt
-  export_GitHubAuthorizationAttemptStore["GitHubAuthorizationAttemptStore"]
-  module_src_types_github_ts --> export_GitHubAuthorizationAttemptStore
-  export_GitHubAuthorizationAttemptStore -.-> export_GitHubAuthorizationAttempt
   export_GitHubOAuthAppConfig["GitHubOAuthAppConfig"]
   module_src_types_github_ts --> export_GitHubOAuthAppConfig
-  export_GitHubOAuthAppConfig -.-> export_GitHubAuthorizationAttemptStore
-  export_GitHubOAuthAppConfig -.-> export_GitHubSessionStore
-  export_GitHubSessionStore["GitHubSessionStore"]
-  module_src_types_github_ts --> export_GitHubSessionStore
+  export_GitHubOAuthAppConfig -.-> export_GitHubPayloadEncryption
+  export_GitHubOAuthAppConfig -.-> export_GitHubSessionBinding
+  export_GitHubPayloadEncryption["GitHubPayloadEncryption"]
+  module_src_types_github_ts --> export_GitHubPayloadEncryption
+  export_GitHubSessionBinding["GitHubSessionBinding"]
+  module_src_types_github_ts --> export_GitHubSessionBinding

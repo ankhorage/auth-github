@@ -1,5 +1,11 @@
 # @ankhorage/auth-github
 
+## 0.3.0
+
+### Minor Changes
+
+- 3ff2779: Migrate GitHub OAuth persistence to the published durable session and authorization-attempt ports.
+
 ## 0.2.1
 
 ### Patch Changes

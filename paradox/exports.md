@@ -18,7 +18,7 @@ Implement the published AuthPort with GitHub OAuth and explicitly unsupported cr
 
 Kind: `type`
 Module: `src/types/github.ts`
-Source: `src/types/github.ts:41:1`
+Source: `src/types/github.ts:39:1`
 
 Configure the GitHub App user-authorization flow and its only supported renewal scope.
 
@@ -26,65 +26,35 @@ Configure the GitHub App user-authorization flow and its only supported renewal 
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| authorizationAttempts | property | `GitHubAuthorizationAttemptStore` | yes |  |
+| authorizationAttempts | property | `AuthorizationAttemptPersistencePort` | yes |  |
 | authorizationAttemptTtlMs | property | `number \| undefined` | no |  |
 | authorizationMode | property | `"github-app"` | yes |  |
 | clientId | property | `string` | yes |  |
 | clientSecret | property | `string` | yes |  |
 | createAttemptId | property | `(() => string) \| undefined` | no |  |
+| createSessionId | property | `(() => string) \| undefined` | no |  |
 | createState | property | `(() => string) \| undefined` | no |  |
 | fetcher | property | `typeof fetch \| undefined` | no |  |
 | now | property | `(() => number) \| undefined` | no |  |
+| payloadEncryption | property | `GitHubPayloadEncryption` | yes |  |
 | redirectUris | property | `readonly string[]` | yes |  |
 | requestTimeoutMs | property | `number \| undefined` | no |  |
-| sessions | property | `GitHubSessionStore` | yes |  |
+| session | property | `GitHubSessionBinding` | yes |  |
+| sessions | property | `SessionPersistencePort` | yes |  |
 
 ## GitHubAuthConfig
 
 Kind: `unknown`
 Module: `src/types/github.ts`
-Source: `src/types/github.ts:51:1`
+Source: `src/types/github.ts:49:1`
 
 Select one explicit GitHub authorization protocol; hosts must not infer it from credentials.
-
-## GitHubAuthorizationAttempt
-
-Kind: `type`
-Module: `src/types/github.ts`
-Source: `src/types/github.ts:4:1`
-
-One short-lived GitHub authorization bound to a host-managed browser session.
-
-### Members
-
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| attemptId | property | `string` | yes |  |
-| expiresAt | property | `number` | yes |  |
-| redirectUri | property | `string` | yes |  |
-| state | property | `string` | yes |  |
-
-## GitHubAuthorizationAttemptStore
-
-Kind: `type`
-Module: `src/types/github.ts`
-Source: `src/types/github.ts:12:1`
-
-Durable attempt storage; consume must atomically delete before returning.
-
-### Members
-
-| Name | Kind | Type | Required | Description |
-| --- | --- | --- | --- | --- |
-| consume | method | `(attemptId: string, now: number) => Promise<GitHubAuthorizationAttempt \| null>` | yes |  |
-| create | method | `(attempt: GitHubAuthorizationAttempt) => Promise<void>` | yes |  |
-| purgeExpired | method | `(now: number) => Promise<void>` | yes |  |
 
 ## GitHubOAuthAppConfig
 
 Kind: `type`
 Module: `src/types/github.ts`
-Source: `src/types/github.ts:46:1`
+Source: `src/types/github.ts:44:1`
 
 Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope.
 
@@ -92,31 +62,49 @@ Configure a classic GitHub OAuth App with the minimum login scope and optional r
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| authorizationAttempts | property | `GitHubAuthorizationAttemptStore` | yes |  |
+| authorizationAttempts | property | `AuthorizationAttemptPersistencePort` | yes |  |
 | authorizationAttemptTtlMs | property | `number \| undefined` | no |  |
 | authorizationMode | property | `"oauth-app"` | yes |  |
 | clientId | property | `string` | yes |  |
 | clientSecret | property | `string` | yes |  |
 | createAttemptId | property | `(() => string) \| undefined` | no |  |
+| createSessionId | property | `(() => string) \| undefined` | no |  |
 | createState | property | `(() => string) \| undefined` | no |  |
 | fetcher | property | `typeof fetch \| undefined` | no |  |
 | now | property | `(() => number) \| undefined` | no |  |
+| payloadEncryption | property | `GitHubPayloadEncryption` | yes |  |
 | redirectUris | property | `readonly string[]` | yes |  |
 | requestTimeoutMs | property | `number \| undefined` | no |  |
-| sessions | property | `GitHubSessionStore` | yes |  |
+| session | property | `GitHubSessionBinding` | yes |  |
+| sessions | property | `SessionPersistencePort` | yes |  |
 
-## GitHubSessionStore
+## GitHubPayloadEncryption
 
 Kind: `type`
 Module: `src/types/github.ts`
-Source: `src/types/github.ts:19:1`
+Source: `src/types/github.ts:15:1`
 
-Request-scoped server session persistence; never a shared global user slot.
+Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage.
 
 ### Members
 
 | Name | Kind | Type | Required | Description |
 | --- | --- | --- | --- | --- |
-| clear | method | `() => Promise<void>` | yes |  |
-| get | method | `() => Promise<AuthSession \| null>` | yes |  |
-| save | method | `(session: AuthSession) => Promise<void>` | yes |  |
+| decrypt | method | `(payload: EncryptedPayload) => Promise<unknown>` | yes |  |
+| encrypt | method | `(payload: unknown) => Promise<EncryptedPayload>` | yes |  |
+
+## GitHubSessionBinding
+
+Kind: `type`
+Module: `src/types/github.ts`
+Source: `src/types/github.ts:8:1`
+
+Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement.
+
+### Members
+
+| Name | Kind | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| clearSessionId | method | `() => Promise<void>` | yes |  |
+| replaceSessionId | method | `(sessionId: string) => Promise<void>` | yes |  |
+| sessionId | property | `string` | yes |  |

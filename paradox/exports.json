@@ -48,22 +48,22 @@
     "modulePath": "src/types/github.ts",
     "sourceLocation": {
       "filePath": "src/types/github.ts",
-      "line": 41,
+      "line": 39,
       "column": 1
     },
     "exportPaths": [
       "src/index.ts"
     ],
     "relatedSymbols": [
-      "GitHubAuthorizationAttemptStore",
-      "GitHubSessionStore"
+      "GitHubPayloadEncryption",
+      "GitHubSessionBinding"
     ],
     "signatures": [],
     "members": [
       {
         "name": "authorizationAttempts",
         "kind": "property",
-        "type": "GitHubAuthorizationAttemptStore",
+        "type": "AuthorizationAttemptPersistencePort",
         "required": true,
         "description": null
       },
@@ -103,6 +103,13 @@
         "description": null
       },
       {
+        "name": "createSessionId",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
         "name": "createState",
         "kind": "property",
         "type": "(() => string) | undefined",
@@ -124,6 +131,13 @@
         "description": null
       },
       {
+        "name": "payloadEncryption",
+        "kind": "property",
+        "type": "GitHubPayloadEncryption",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "redirectUris",
         "kind": "property",
         "type": "readonly string[]",
@@ -138,9 +152,16 @@
         "description": null
       },
       {
+        "name": "session",
+        "kind": "property",
+        "type": "GitHubSessionBinding",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "sessions",
         "kind": "property",
-        "type": "GitHubSessionStore",
+        "type": "SessionPersistencePort",
         "required": true,
         "description": null
       }
@@ -158,7 +179,7 @@
     "modulePath": "src/types/github.ts",
     "sourceLocation": {
       "filePath": "src/types/github.ts",
-      "line": 51,
+      "line": 49,
       "column": 1
     },
     "exportPaths": [
@@ -167,103 +188,6 @@
     "relatedSymbols": [],
     "signatures": [],
     "members": [],
-    "structuredRows": []
-  },
-  {
-    "name": "GitHubAuthorizationAttempt",
-    "title": null,
-    "description": "One short-lived GitHub authorization bound to a host-managed browser session.",
-    "isReadme": false,
-    "see": [],
-    "security": [],
-    "kind": "type",
-    "modulePath": "src/types/github.ts",
-    "sourceLocation": {
-      "filePath": "src/types/github.ts",
-      "line": 4,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [],
-    "signatures": [],
-    "members": [
-      {
-        "name": "attemptId",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "expiresAt",
-        "kind": "property",
-        "type": "number",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "redirectUri",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "state",
-        "kind": "property",
-        "type": "string",
-        "required": true,
-        "description": null
-      }
-    ],
-    "structuredRows": []
-  },
-  {
-    "name": "GitHubAuthorizationAttemptStore",
-    "title": null,
-    "description": "Durable attempt storage; consume must atomically delete before returning.",
-    "isReadme": false,
-    "see": [],
-    "security": [],
-    "kind": "type",
-    "modulePath": "src/types/github.ts",
-    "sourceLocation": {
-      "filePath": "src/types/github.ts",
-      "line": 12,
-      "column": 1
-    },
-    "exportPaths": [
-      "src/index.ts"
-    ],
-    "relatedSymbols": [
-      "GitHubAuthorizationAttempt"
-    ],
-    "signatures": [],
-    "members": [
-      {
-        "name": "consume",
-        "kind": "method",
-        "type": "(attemptId: string, now: number) => Promise<GitHubAuthorizationAttempt | null>",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "create",
-        "kind": "method",
-        "type": "(attempt: GitHubAuthorizationAttempt) => Promise<void>",
-        "required": true,
-        "description": null
-      },
-      {
-        "name": "purgeExpired",
-        "kind": "method",
-        "type": "(now: number) => Promise<void>",
-        "required": true,
-        "description": null
-      }
-    ],
     "structuredRows": []
   },
   {
@@ -277,22 +201,22 @@
     "modulePath": "src/types/github.ts",
     "sourceLocation": {
       "filePath": "src/types/github.ts",
-      "line": 46,
+      "line": 44,
       "column": 1
     },
     "exportPaths": [
       "src/index.ts"
     ],
     "relatedSymbols": [
-      "GitHubAuthorizationAttemptStore",
-      "GitHubSessionStore"
+      "GitHubPayloadEncryption",
+      "GitHubSessionBinding"
     ],
     "signatures": [],
     "members": [
       {
         "name": "authorizationAttempts",
         "kind": "property",
-        "type": "GitHubAuthorizationAttemptStore",
+        "type": "AuthorizationAttemptPersistencePort",
         "required": true,
         "description": null
       },
@@ -332,6 +256,13 @@
         "description": null
       },
       {
+        "name": "createSessionId",
+        "kind": "property",
+        "type": "(() => string) | undefined",
+        "required": false,
+        "description": null
+      },
+      {
         "name": "createState",
         "kind": "property",
         "type": "(() => string) | undefined",
@@ -353,6 +284,13 @@
         "description": null
       },
       {
+        "name": "payloadEncryption",
+        "kind": "property",
+        "type": "GitHubPayloadEncryption",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "redirectUris",
         "kind": "property",
         "type": "readonly string[]",
@@ -367,9 +305,16 @@
         "description": null
       },
       {
+        "name": "session",
+        "kind": "property",
+        "type": "GitHubSessionBinding",
+        "required": true,
+        "description": null
+      },
+      {
         "name": "sessions",
         "kind": "property",
-        "type": "GitHubSessionStore",
+        "type": "SessionPersistencePort",
         "required": true,
         "description": null
       }
@@ -377,9 +322,9 @@
     "structuredRows": []
   },
   {
-    "name": "GitHubSessionStore",
+    "name": "GitHubPayloadEncryption",
     "title": null,
-    "description": "Request-scoped server session persistence; never a shared global user slot.",
+    "description": "Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage.",
     "isReadme": false,
     "see": [],
     "security": [],
@@ -387,7 +332,7 @@
     "modulePath": "src/types/github.ts",
     "sourceLocation": {
       "filePath": "src/types/github.ts",
-      "line": 19,
+      "line": 15,
       "column": 1
     },
     "exportPaths": [
@@ -397,23 +342,60 @@
     "signatures": [],
     "members": [
       {
-        "name": "clear",
+        "name": "decrypt",
+        "kind": "method",
+        "type": "(payload: EncryptedPayload) => Promise<unknown>",
+        "required": true,
+        "description": null
+      },
+      {
+        "name": "encrypt",
+        "kind": "method",
+        "type": "(payload: unknown) => Promise<EncryptedPayload>",
+        "required": true,
+        "description": null
+      }
+    ],
+    "structuredRows": []
+  },
+  {
+    "name": "GitHubSessionBinding",
+    "title": null,
+    "description": "Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement.",
+    "isReadme": false,
+    "see": [],
+    "security": [],
+    "kind": "type",
+    "modulePath": "src/types/github.ts",
+    "sourceLocation": {
+      "filePath": "src/types/github.ts",
+      "line": 8,
+      "column": 1
+    },
+    "exportPaths": [
+      "src/index.ts"
+    ],
+    "relatedSymbols": [],
+    "signatures": [],
+    "members": [
+      {
+        "name": "clearSessionId",
         "kind": "method",
         "type": "() => Promise<void>",
         "required": true,
         "description": null
       },
       {
-        "name": "get",
+        "name": "replaceSessionId",
         "kind": "method",
-        "type": "() => Promise<AuthSession | null>",
+        "type": "(sessionId: string) => Promise<void>",
         "required": true,
         "description": null
       },
       {
-        "name": "save",
-        "kind": "method",
-        "type": "(session: AuthSession) => Promise<void>",
+        "name": "sessionId",
+        "kind": "property",
+        "type": "string",
         "required": true,
         "description": null
       }

@@ -134,7 +134,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/auth/adapters/github/createGitHubOAuthFlow.ts">
       src/features/auth/adapters/github/createGitHubOAuthFlow.ts
-      <small>10 functions</small>
+      <small>13 functions</small>
     </button>
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/auth/adapters/github/createGitHubOAuthGateway.ts">
@@ -144,7 +144,7 @@
   </li><li>
     <button class="nav-button" type="button" data-target="src/features/auth/adapters/github/createGitHubSessionOperations.ts">
       src/features/auth/adapters/github/createGitHubSessionOperations.ts
-      <small>5 functions</small>
+      <small>9 functions</small>
     </button>
   </li>
           </ul>
@@ -156,7 +156,7 @@
     <section class="panel">
       <h2>Package overview</h2>
       <div class="summary">
-        <div><strong>7</strong><span class="muted">public exports</span></div>
+        <div><strong>6</strong><span class="muted">public exports</span></div>
         <div><strong>0</strong><span class="muted">components</span></div>
         <div><strong>6</strong><span class="muted">modules</span></div>
         <div><strong>1</strong><span class="muted">entrypoints</span></div>
@@ -190,16 +190,16 @@
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <code>src/features/auth/adapters/github/createGitHubOAuthGateway.ts</code>, <code>src/types/github.ts</code></p>
     <p><strong>Exports:</strong> <code>createGitHubSessionOperations</code></p>
-  </article><article class="item" data-search="src/index.ts createGitHubAuthAdapter GitHubAppAuthConfig GitHubAuthConfig GitHubAuthorizationAttempt GitHubAuthorizationAttemptStore GitHubOAuthAppConfig GitHubSessionStore">
+  </article><article class="item" data-search="src/index.ts createGitHubAuthAdapter GitHubAppAuthConfig GitHubAuthConfig GitHubOAuthAppConfig GitHubPayloadEncryption GitHubSessionBinding">
     <h3>src/index.ts</h3>
     <p class="muted">Configured entrypoint</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>createGitHubAuthAdapter</code>, <code>GitHubAppAuthConfig</code>, <code>GitHubAuthConfig</code>, <code>GitHubAuthorizationAttempt</code>, <code>GitHubAuthorizationAttemptStore</code>, <code>GitHubOAuthAppConfig</code>, <code>GitHubSessionStore</code></p>
-  </article><article class="item" data-search="src/types/github.ts GitHubAppAuthConfig GitHubAuthConfig GitHubAuthorizationAttempt GitHubAuthorizationAttemptStore GitHubOAuthAppConfig GitHubSessionStore">
+    <p><strong>Exports:</strong> <code>createGitHubAuthAdapter</code>, <code>GitHubAppAuthConfig</code>, <code>GitHubAuthConfig</code>, <code>GitHubOAuthAppConfig</code>, <code>GitHubPayloadEncryption</code>, <code>GitHubSessionBinding</code></p>
+  </article><article class="item" data-search="src/types/github.ts GitHubAppAuthConfig GitHubAuthConfig GitHubOAuthAppConfig GitHubPayloadEncryption GitHubSessionBinding">
     <h3>src/types/github.ts</h3>
     <p class="muted">Referenced module</p>
     <p><strong>Dependencies:</strong> <span class="empty">None</span></p>
-    <p><strong>Exports:</strong> <code>GitHubAppAuthConfig</code>, <code>GitHubAuthConfig</code>, <code>GitHubAuthorizationAttempt</code>, <code>GitHubAuthorizationAttemptStore</code>, <code>GitHubOAuthAppConfig</code>, <code>GitHubSessionStore</code></p>
+    <p><strong>Exports:</strong> <code>GitHubAppAuthConfig</code>, <code>GitHubAuthConfig</code>, <code>GitHubOAuthAppConfig</code>, <code>GitHubPayloadEncryption</code>, <code>GitHubSessionBinding</code></p>
   </article>
     </section>
     <section class="panel">
@@ -236,14 +236,14 @@
             </section>
             <section>
               <h3>src/types/github.ts</h3>
-              <article class="item" id="symbol-githubappauthconfig" data-search="GitHubAppAuthConfig  type src/types/github.ts Configure the GitHub App user-authorization flow and its only supported renewal scope. GitHubAuthorizationAttemptStore GitHubSessionStore">
+              <article class="item" id="symbol-githubappauthconfig" data-search="GitHubAppAuthConfig  type src/types/github.ts Configure the GitHub App user-authorization flow and its only supported renewal scope. GitHubPayloadEncryption GitHubSessionBinding">
     <h4>GitHubAppAuthConfig</h4>
     
-    <p class="muted">type • <code>src/types/github.ts:41:1</code></p>
+    <p class="muted">type • <code>src/types/github.ts:39:1</code></p>
     <p>Configure the GitHub App user-authorization flow and its only supported renewal scope.</p>
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
-    <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">GitHubAuthorizationAttemptStore</li><li class="chip">GitHubSessionStore</li></ul></div>
+    <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">GitHubPayloadEncryption</li><li class="chip">GitHubSessionBinding</li></ul></div>
     
     <table>
     <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
@@ -251,7 +251,7 @@
       <tr>
             <td><code>authorizationAttempts</code></td>
             <td>property</td>
-            <td><code>GitHubAuthorizationAttemptStore</code></td>
+            <td><code>AuthorizationAttemptPersistencePort</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
@@ -285,6 +285,12 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>createSessionId</code></td>
+            <td>property</td>
+            <td><code>(() =&gt; string) | undefined</code></td>
+            <td>no</td>
+            <td></td>
+          </tr><tr>
             <td><code>createState</code></td>
             <td>property</td>
             <td><code>(() =&gt; string) | undefined</code></td>
@@ -303,6 +309,12 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>payloadEncryption</code></td>
+            <td>property</td>
+            <td><code>GitHubPayloadEncryption</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
             <td><code>redirectUris</code></td>
             <td>property</td>
             <td><code>readonly string[]</code></td>
@@ -315,9 +327,15 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>session</code></td>
+            <td>property</td>
+            <td><code>GitHubSessionBinding</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
             <td><code>sessions</code></td>
             <td>property</td>
-            <td><code>GitHubSessionStore</code></td>
+            <td><code>SessionPersistencePort</code></td>
             <td>yes</td>
             <td></td>
           </tr>
@@ -326,93 +344,21 @@
   </article><article class="item" id="symbol-githubauthconfig" data-search="GitHubAuthConfig  unknown src/types/github.ts Select one explicit GitHub authorization protocol; hosts must not infer it from credentials.">
     <h4>GitHubAuthConfig</h4>
     
-    <p class="muted">unknown • <code>src/types/github.ts:51:1</code></p>
+    <p class="muted">unknown • <code>src/types/github.ts:49:1</code></p>
     <p>Select one explicit GitHub authorization protocol; hosts must not infer it from credentials.</p>
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
     <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
     
     
-  </article><article class="item" id="symbol-githubauthorizationattempt" data-search="GitHubAuthorizationAttempt  type src/types/github.ts One short-lived GitHub authorization bound to a host-managed browser session.">
-    <h4>GitHubAuthorizationAttempt</h4>
-    
-    <p class="muted">type • <code>src/types/github.ts:4:1</code></p>
-    <p>One short-lived GitHub authorization bound to a host-managed browser session.</p>
-    
-    <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
-    <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
-    
-    <table>
-    <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr>
-            <td><code>attemptId</code></td>
-            <td>property</td>
-            <td><code>string</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr><tr>
-            <td><code>expiresAt</code></td>
-            <td>property</td>
-            <td><code>number</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr><tr>
-            <td><code>redirectUri</code></td>
-            <td>property</td>
-            <td><code>string</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr><tr>
-            <td><code>state</code></td>
-            <td>property</td>
-            <td><code>string</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr>
-    </tbody>
-  </table>
-  </article><article class="item" id="symbol-githubauthorizationattemptstore" data-search="GitHubAuthorizationAttemptStore  type src/types/github.ts Durable attempt storage; consume must atomically delete before returning. GitHubAuthorizationAttempt">
-    <h4>GitHubAuthorizationAttemptStore</h4>
-    
-    <p class="muted">type • <code>src/types/github.ts:12:1</code></p>
-    <p>Durable attempt storage; consume must atomically delete before returning.</p>
-    
-    <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
-    <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">GitHubAuthorizationAttempt</li></ul></div>
-    
-    <table>
-    <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
-    <tbody>
-      <tr>
-            <td><code>consume</code></td>
-            <td>method</td>
-            <td><code>(attemptId: string, now: number) =&gt; Promise&lt;GitHubAuthorizationAttempt | null&gt;</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr><tr>
-            <td><code>create</code></td>
-            <td>method</td>
-            <td><code>(attempt: GitHubAuthorizationAttempt) =&gt; Promise&lt;void&gt;</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr><tr>
-            <td><code>purgeExpired</code></td>
-            <td>method</td>
-            <td><code>(now: number) =&gt; Promise&lt;void&gt;</code></td>
-            <td>yes</td>
-            <td></td>
-          </tr>
-    </tbody>
-  </table>
-  </article><article class="item" id="symbol-githuboauthappconfig" data-search="GitHubOAuthAppConfig  type src/types/github.ts Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope. GitHubAuthorizationAttemptStore GitHubSessionStore">
+  </article><article class="item" id="symbol-githuboauthappconfig" data-search="GitHubOAuthAppConfig  type src/types/github.ts Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope. GitHubPayloadEncryption GitHubSessionBinding">
     <h4>GitHubOAuthAppConfig</h4>
     
-    <p class="muted">type • <code>src/types/github.ts:46:1</code></p>
+    <p class="muted">type • <code>src/types/github.ts:44:1</code></p>
     <p>Configure a classic GitHub OAuth App with the minimum login scope and optional repository scope.</p>
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
-    <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">GitHubAuthorizationAttemptStore</li><li class="chip">GitHubSessionStore</li></ul></div>
+    <div><strong>Related symbols:</strong> <ul class="chips"><li class="chip">GitHubPayloadEncryption</li><li class="chip">GitHubSessionBinding</li></ul></div>
     
     <table>
     <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
@@ -420,7 +366,7 @@
       <tr>
             <td><code>authorizationAttempts</code></td>
             <td>property</td>
-            <td><code>GitHubAuthorizationAttemptStore</code></td>
+            <td><code>AuthorizationAttemptPersistencePort</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
@@ -454,6 +400,12 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>createSessionId</code></td>
+            <td>property</td>
+            <td><code>(() =&gt; string) | undefined</code></td>
+            <td>no</td>
+            <td></td>
+          </tr><tr>
             <td><code>createState</code></td>
             <td>property</td>
             <td><code>(() =&gt; string) | undefined</code></td>
@@ -472,6 +424,12 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>payloadEncryption</code></td>
+            <td>property</td>
+            <td><code>GitHubPayloadEncryption</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
             <td><code>redirectUris</code></td>
             <td>property</td>
             <td><code>readonly string[]</code></td>
@@ -484,19 +442,25 @@
             <td>no</td>
             <td></td>
           </tr><tr>
+            <td><code>session</code></td>
+            <td>property</td>
+            <td><code>GitHubSessionBinding</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
             <td><code>sessions</code></td>
             <td>property</td>
-            <td><code>GitHubSessionStore</code></td>
+            <td><code>SessionPersistencePort</code></td>
             <td>yes</td>
             <td></td>
           </tr>
     </tbody>
   </table>
-  </article><article class="item" id="symbol-githubsessionstore" data-search="GitHubSessionStore  type src/types/github.ts Request-scoped server session persistence; never a shared global user slot.">
-    <h4>GitHubSessionStore</h4>
+  </article><article class="item" id="symbol-githubpayloadencryption" data-search="GitHubPayloadEncryption  type src/types/github.ts Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage.">
+    <h4>GitHubPayloadEncryption</h4>
     
-    <p class="muted">type • <code>src/types/github.ts:19:1</code></p>
-    <p>Request-scoped server session persistence; never a shared global user slot.</p>
+    <p class="muted">type • <code>src/types/github.ts:15:1</code></p>
+    <p>Encrypt and decrypt adapter payloads at the server boundary without exposing plaintext storage.</p>
     
     <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
     <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
@@ -505,21 +469,48 @@
     <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
     <tbody>
       <tr>
-            <td><code>clear</code></td>
+            <td><code>decrypt</code></td>
+            <td>method</td>
+            <td><code>(payload: EncryptedPayload) =&gt; Promise&lt;unknown&gt;</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr><tr>
+            <td><code>encrypt</code></td>
+            <td>method</td>
+            <td><code>(payload: unknown) =&gt; Promise&lt;EncryptedPayload&gt;</code></td>
+            <td>yes</td>
+            <td></td>
+          </tr>
+    </tbody>
+  </table>
+  </article><article class="item" id="symbol-githubsessionbinding" data-search="GitHubSessionBinding  type src/types/github.ts Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement.">
+    <h4>GitHubSessionBinding</h4>
+    
+    <p class="muted">type • <code>src/types/github.ts:8:1</code></p>
+    <p>Bind the adapter to one opaque, HttpOnly host session and allow only safe identifier replacement.</p>
+    
+    <p><strong>Export paths:</strong> <code>src/index.ts</code></p>
+    <div><strong>Related symbols:</strong> <span class="empty">None</span></div>
+    
+    <table>
+    <thead><tr><th>Member</th><th>Kind</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr>
+            <td><code>clearSessionId</code></td>
             <td>method</td>
             <td><code>() =&gt; Promise&lt;void&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
-            <td><code>get</code></td>
+            <td><code>replaceSessionId</code></td>
             <td>method</td>
-            <td><code>() =&gt; Promise&lt;AuthSession | null&gt;</code></td>
+            <td><code>(sessionId: string) =&gt; Promise&lt;void&gt;</code></td>
             <td>yes</td>
             <td></td>
           </tr><tr>
-            <td><code>save</code></td>
-            <td>method</td>
-            <td><code>(session: AuthSession) =&gt; Promise&lt;void&gt;</code></td>
+            <td><code>sessionId</code></td>
+            <td>property</td>
+            <td><code>string</code></td>
             <td>yes</td>
             <td></td>
           </tr>
@@ -641,21 +632,18 @@
   export_createGitHubAuthAdapter -.-&gt; export_GitHubAuthConfig
   export_GitHubAppAuthConfig[&quot;GitHubAppAuthConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubAppAuthConfig
-  export_GitHubAppAuthConfig -.-&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubAppAuthConfig -.-&gt; export_GitHubSessionStore
+  export_GitHubAppAuthConfig -.-&gt; export_GitHubPayloadEncryption
+  export_GitHubAppAuthConfig -.-&gt; export_GitHubSessionBinding
   export_GitHubAuthConfig[&quot;GitHubAuthConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubAuthConfig
-  export_GitHubAuthorizationAttempt[&quot;GitHubAuthorizationAttempt&quot;]
-  module_src_types_github_ts --&gt; export_GitHubAuthorizationAttempt
-  export_GitHubAuthorizationAttemptStore[&quot;GitHubAuthorizationAttemptStore&quot;]
-  module_src_types_github_ts --&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubAuthorizationAttemptStore -.-&gt; export_GitHubAuthorizationAttempt
   export_GitHubOAuthAppConfig[&quot;GitHubOAuthAppConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubOAuthAppConfig
-  export_GitHubOAuthAppConfig -.-&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubOAuthAppConfig -.-&gt; export_GitHubSessionStore
-  export_GitHubSessionStore[&quot;GitHubSessionStore&quot;]
-  module_src_types_github_ts --&gt; export_GitHubSessionStore
+  export_GitHubOAuthAppConfig -.-&gt; export_GitHubPayloadEncryption
+  export_GitHubOAuthAppConfig -.-&gt; export_GitHubSessionBinding
+  export_GitHubPayloadEncryption[&quot;GitHubPayloadEncryption&quot;]
+  module_src_types_github_ts --&gt; export_GitHubPayloadEncryption
+  export_GitHubSessionBinding[&quot;GitHubSessionBinding&quot;]
+  module_src_types_github_ts --&gt; export_GitHubSessionBinding
 </div>
     <details>
       <summary>View Mermaid source</summary>
@@ -671,21 +659,18 @@
   export_createGitHubAuthAdapter -.-&gt; export_GitHubAuthConfig
   export_GitHubAppAuthConfig[&quot;GitHubAppAuthConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubAppAuthConfig
-  export_GitHubAppAuthConfig -.-&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubAppAuthConfig -.-&gt; export_GitHubSessionStore
+  export_GitHubAppAuthConfig -.-&gt; export_GitHubPayloadEncryption
+  export_GitHubAppAuthConfig -.-&gt; export_GitHubSessionBinding
   export_GitHubAuthConfig[&quot;GitHubAuthConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubAuthConfig
-  export_GitHubAuthorizationAttempt[&quot;GitHubAuthorizationAttempt&quot;]
-  module_src_types_github_ts --&gt; export_GitHubAuthorizationAttempt
-  export_GitHubAuthorizationAttemptStore[&quot;GitHubAuthorizationAttemptStore&quot;]
-  module_src_types_github_ts --&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubAuthorizationAttemptStore -.-&gt; export_GitHubAuthorizationAttempt
   export_GitHubOAuthAppConfig[&quot;GitHubOAuthAppConfig&quot;]
   module_src_types_github_ts --&gt; export_GitHubOAuthAppConfig
-  export_GitHubOAuthAppConfig -.-&gt; export_GitHubAuthorizationAttemptStore
-  export_GitHubOAuthAppConfig -.-&gt; export_GitHubSessionStore
-  export_GitHubSessionStore[&quot;GitHubSessionStore&quot;]
-  module_src_types_github_ts --&gt; export_GitHubSessionStore
+  export_GitHubOAuthAppConfig -.-&gt; export_GitHubPayloadEncryption
+  export_GitHubOAuthAppConfig -.-&gt; export_GitHubSessionBinding
+  export_GitHubPayloadEncryption[&quot;GitHubPayloadEncryption&quot;]
+  module_src_types_github_ts --&gt; export_GitHubPayloadEncryption
+  export_GitHubSessionBinding[&quot;GitHubSessionBinding&quot;]
+  module_src_types_github_ts --&gt; export_GitHubSessionBinding
 </pre>
     </details>
   </article><article class="item" data-search="createGitHubAuthAdapter sequence diagrams/sequences/create-git-hub-auth-adapter.mmd">
@@ -748,17 +733,17 @@
     
   </article><article class="item" data-search="isOptionalPositiveInteger src/features/auth/adapters/github/createGitHubAuthAdapter.ts Validate an optional positive integer without bloating the adapter configuration policy.">
     <h3>isOptionalPositiveInteger</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:36:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:37:1</code></p>
     <p>Validate an optional positive integer without bloating the adapter configuration policy.</p>
     
   </article><article class="item" data-search="isSecureRedirectUri src/features/auth/adapters/github/createGitHubAuthAdapter.ts Require exact canonical HTTPS callback URIs without embedded credentials or query data.">
     <h3>isSecureRedirectUri</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:41:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:42:1</code></p>
     <p>Require exact canonical HTTPS callback URIs without embedded credentials or query data.</p>
     
   </article><article class="item" data-search="unsupported src/features/auth/adapters/github/createGitHubAuthAdapter.ts Make unsupported provider operations fail closed rather than simulate successful auth.">
     <h3>unsupported</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:58:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubAuthAdapter.ts:59:1</code></p>
     <p>Make unsupported provider operations fail closed rather than simulate successful auth.</p>
     
   </article>
@@ -768,52 +753,67 @@
       <h2>src/features/auth/adapters/github/createGitHubOAuthFlow.ts</h2>
       <article class="item" data-search="createGitHubOAuthFlow src/features/auth/adapters/github/createGitHubOAuthFlow.ts Provide OAuth start/completion using durable one-use attempts and verified GitHub identity.">
     <h3>createGitHubOAuthFlow</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:16:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:19:1</code></p>
     <p>Provide OAuth start/completion using durable one-use attempts and verified GitHub identity.</p>
     
   </article><article class="item" data-search="startAuthorizationAsync src/features/auth/adapters/github/createGitHubOAuthFlow.ts Verify the provider, callback, and requested permissions before storing a new attempt.">
     <h3>startAuthorizationAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:26:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:29:1</code></p>
     <p>Verify the provider, callback, and requested permissions before storing a new attempt.</p>
     
   </article><article class="item" data-search="createOpaqueValue src/features/auth/adapters/github/createGitHubOAuthFlow.ts Generate host-overridable opaque OAuth values without detaching the platform Crypto receiver.">
     <h3>createOpaqueValue</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:67:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:76:1</code></p>
     <p>Generate host-overridable opaque OAuth values without detaching the platform Crypto receiver.</p>
     
   </article><article class="item" data-search="hasSupportedScopes src/features/auth/adapters/github/createGitHubOAuthFlow.ts Restrict each GitHub authorization protocol to its documented, least-privilege scope vocabulary.">
     <h3>hasSupportedScopes</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:72:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:81:1</code></p>
     <p>Restrict each GitHub authorization protocol to its documented, least-privilege scope vocabulary.</p>
     
   </article><article class="item" data-search="createAuthorizationUrl src/features/auth/adapters/github/createGitHubOAuthFlow.ts Construct GitHub&#39;s fixed OAuth endpoint without accepting arbitrary caller query parameters.">
     <h3>createAuthorizationUrl</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:88:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:97:1</code></p>
     <p>Construct GitHub&#39;s fixed OAuth endpoint without accepting arbitrary caller query parameters.</p>
     
   </article><article class="item" data-search="completeAuthorizationAsync src/features/auth/adapters/github/createGitHubOAuthFlow.ts Consume the OAuth attempt before validation and persist only verified GitHub sessions.">
     <h3>completeAuthorizationAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:102:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:111:1</code></p>
     <p>Consume the OAuth attempt before validation and persist only verified GitHub sessions.</p>
     
   </article><article class="item" data-search="consumeAttemptAsync src/features/auth/adapters/github/createGitHubOAuthFlow.ts Retire the pending authorization even when storage fails or the attempt is expired.">
     <h3>consumeAttemptAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:133:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:144:1</code></p>
     <p>Retire the pending authorization even when storage fails or the attempt is expired.</p>
+    
+  </article><article class="item" data-search="persistSessionAsync src/features/auth/adapters/github/createGitHubOAuthFlow.ts Create or atomically rotate a verified user&#39;s opaque durable session before binding it to the browser.">
+    <h3>persistSessionAsync</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:167:1</code></p>
+    <p>Create or atomically rotate a verified user&#39;s opaque durable session before binding it to the browser.</p>
+    
+  </article><article class="item" data-search="isAttemptPayload src/features/auth/adapters/github/createGitHubOAuthFlow.ts Reject decrypted attempt payloads that are malformed or no longer match the consumed record.">
+    <h3>isAttemptPayload</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:197:1</code></p>
+    <p>Reject decrypted attempt payloads that are malformed or no longer match the consumed record.</p>
+    
+  </article><article class="item" data-search="isRecord src/features/auth/adapters/github/createGitHubOAuthFlow.ts Narrow encrypted host payloads before reading their OAuth fields.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:211:1</code></p>
+    <p>Narrow encrypted host payloads before reading their OAuth fields.</p>
     
   </article><article class="item" data-search="parseCallback src/features/auth/adapters/github/createGitHubOAuthFlow.ts Bind a callback to its configured HTTPS origin/path and a single OAuth state value.">
     <h3>parseCallback</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:145:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:216:1</code></p>
     <p>Bind a callback to its configured HTTPS origin/path and a single OAuth state value.</p>
     
   </article><article class="item" data-search="oauthError src/features/auth/adapters/github/createGitHubOAuthFlow.ts Return contract-compatible OAuth failures without raw codes, tokens, or provider payloads.">
     <h3>oauthError</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:172:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:243:1</code></p>
     <p>Return contract-compatible OAuth failures without raw codes, tokens, or provider payloads.</p>
     
   </article><article class="item" data-search="oauthStartError src/features/auth/adapters/github/createGitHubOAuthFlow.ts Refuse incorrect provider setup with a portable, nonsecret OAuth start result.">
     <h3>oauthStartError</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:190:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubOAuthFlow.ts:261:1</code></p>
     <p>Refuse incorrect provider setup with a portable, nonsecret OAuth start result.</p>
     
   </article>
@@ -878,27 +878,47 @@
       <h2>src/features/auth/adapters/github/createGitHubSessionOperations.ts</h2>
       <article class="item" data-search="createGitHubSessionOperations src/features/auth/adapters/github/createGitHubSessionOperations.ts Bind session-related AuthPort operations to a request-scoped durable host store.">
     <h3>createGitHubSessionOperations</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:8:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:9:1</code></p>
     <p>Bind session-related AuthPort operations to a request-scoped durable host store.</p>
     
   </article><article class="item" data-search="signOutAsync src/features/auth/adapters/github/createGitHubSessionOperations.ts Remove only the host&#39;s local session; never claim global GitHub sign-out.">
     <h3>signOutAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:20:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:21:1</code></p>
     <p>Remove only the host&#39;s local session; never claim global GitHub sign-out.</p>
     
   </article><article class="item" data-search="getSessionAsync src/features/auth/adapters/github/createGitHubSessionOperations.ts Read the stored session without silently treating expired tokens as authenticated.">
     <h3>getSessionAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:35:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:50:1</code></p>
     <p>Read the stored session without silently treating expired tokens as authenticated.</p>
     
   </article><article class="item" data-search="refreshSessionAsync src/features/auth/adapters/github/createGitHubSessionOperations.ts Refresh a token and fail closed if GitHub returns another user identity.">
     <h3>refreshSessionAsync</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:47:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:60:1</code></p>
     <p>Refresh a token and fail closed if GitHub returns another user identity.</p>
+    
+  </article><article class="item" data-search="readStoredSessionAsync src/features/auth/adapters/github/createGitHubSessionOperations.ts Read and decrypt only a currently valid session whose payload identity matches its durable owner.">
+    <h3>readStoredSessionAsync</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:99:1</code></p>
+    <p>Read and decrypt only a currently valid session whose payload identity matches its durable owner.</p>
+    
+  </article><article class="item" data-search="createOpaqueValue src/features/auth/adapters/github/createGitHubSessionOperations.ts Generate a host-overridable opaque session identifier without retaining it in process memory.">
+    <h3>createOpaqueValue</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:113:1</code></p>
+    <p>Generate a host-overridable opaque session identifier without retaining it in process memory.</p>
+    
+  </article><article class="item" data-search="isAuthSession src/features/auth/adapters/github/createGitHubSessionOperations.ts Verify decrypted storage data before it can authorize a GitHub user or refresh credential.">
+    <h3>isAuthSession</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:118:1</code></p>
+    <p>Verify decrypted storage data before it can authorize a GitHub user or refresh credential.</p>
+    
+  </article><article class="item" data-search="isRecord src/features/auth/adapters/github/createGitHubSessionOperations.ts Narrow untrusted decrypted data without accepting arrays or null as session records.">
+    <h3>isRecord</h3>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:130:1</code></p>
+    <p>Narrow untrusted decrypted data without accepting arrays or null as session records.</p>
     
   </article><article class="item" data-search="sessionError src/features/auth/adapters/github/createGitHubSessionOperations.ts Normalize session failures without exposing secrets from storage or GitHub.">
     <h3>sessionError</h3>
-    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:68:1</code></p>
+    <p class="muted"><code>src/features/auth/adapters/github/createGitHubSessionOperations.ts:135:1</code></p>
     <p>Normalize session failures without exposing secrets from storage or GitHub.</p>
     
   </article>
